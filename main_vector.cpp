@@ -234,7 +234,7 @@ void Print(Student S[], int s, string output)
 int RandomGrade()
 {
     int grade;
-    grade = rand() % (10 + 1);
+    grade = 1 + rand() % ((10 + 1) - 1);
     return grade;
 }
 
@@ -277,7 +277,7 @@ int main()
     srand(time(0));
 
     //Pazymiu intervalas
-    int maxGrade = 10, minGrade = 0;
+    int maxGrade = 10, minGrade = 1;
 
     double median;
 
