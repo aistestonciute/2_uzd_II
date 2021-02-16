@@ -53,4 +53,4 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 
 ## Versijos ##
 
-* [v0.1]() Pradinė sistemos versija.
+* [v0.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.1) Pradinė sistemos versija.
