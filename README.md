@@ -34,8 +34,8 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 * Vartotojui vietoje "y" arba "n" įvedus kitokį simbolį;
 * Vartotojui vietoje studentų ir pažymių skaičiaus įvedus: neleistiną simbolį, raidę, žodį arba skaičių, mažesnį už 1;
 * Varototojui vietoje vardo ir pavardės įvedus ne žodį;.
-* Vartotojui vietoje pažymio (kuris turi būti nuo 0 iki 10) įvedus bet kokį kitą simbolį ar žodį;
-* Vartotojui vietoje pažymio (kuris turi būti nuo 0 iki 10) arba "stop", pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
+* Vartotojui vietoje pažymio (kuris turi būti nuo 1 iki 10) įvedus bet kokį kitą simbolį ar žodį;
+* Vartotojui vietoje pažymio (kuris turi būti nuo 1 iki 10) arba "stop", pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
   
 :heavy_exclamation_mark: Pakartotinis įvedimas vyksta iki tol, kol vartotojas įveda teisingą norimą reikšmę.
 
