@@ -8,6 +8,8 @@
 
 using namespace std;
 
+
+// Struktura saugo vieno studento informacija
 struct Student
 {
     string name;
@@ -18,9 +20,8 @@ struct Student
     double final;
 
 };
-Student S[10000];
 
-
+//Tikrina ar ivesta reiksme atititnka reikalavimus (yra skaicius, pazymys priklauso [0,10] intervalui)
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 {
     bool isCorrectValue = true;
@@ -51,6 +52,7 @@ bool isCorrectNumber(string temp, int maxGrade, int minGrade)
     return isCorrectValue;
 }
 
+//Skaiciaus ivedimo funkcija (si funkcija naudojama ir zinant n ir ne)
 int CorrectNumber(string input, int maxGrade, int minGrade, bool stop)
 {
     int x;
@@ -70,7 +72,7 @@ int CorrectNumber(string input, int maxGrade, int minGrade, bool stop)
     return x;
 }
 
-
+//Skaiciaus ivedimo funkcija (su maziau parametru)
 int CorrectNumber(string input)
 {
     int a = CorrectNumber(input, 0, 0, false);
@@ -78,6 +80,7 @@ int CorrectNumber(string input)
 }
 
 
+//Patikrina ar ivesta reiksme nera "stop" (naudojama pazymiu rasymui, kai nezinoma n)
 void Stop(string input, int maxGrade, int minGrade, vector<int> &nd, int& n)
 {
     bool stop = true;
@@ -102,8 +105,7 @@ void Stop(string input, int maxGrade, int minGrade, vector<int> &nd, int& n)
     }
 }
 
-
-
+// Patikrinama ar ivesta varda/pavarde sudaro tik raides
 bool isCorrectString(string var)
 {
     bool isCorrect = true;
@@ -122,6 +124,7 @@ bool isCorrectString(string var)
     return isCorrect;
 }
 
+//Jei ivesta varda/pavarde sudaro tik raides, programa iraso ta kintamaji. Jei ne, prasoma ivesti is naujo.
 string CorrectString(int x, string input)
 {
     string var;
@@ -134,22 +137,22 @@ string CorrectString(int x, string input)
     return var;
 }
 
-
+//Skaiciuojama pazymiu suma, reikalinga vidurkiui.
 int Sum(int n, vector<int> nd)
 {
     int sum;
     sum = accumulate(nd.begin(), nd.end(), 0);
     return sum;
 }
-
+//Galutinio vidurkio skaiciavimas
 double Average(int n, vector <int> nd, int egz)
 
 {
-    double average = 0.4 * (Sum(n, nd) / n * 1.0) + 0.6 * egz;
+    double average = 0.4 * (Sum(n, nd) * 1.0 / n) + 0.6 * egz;
     return average;
 }
 
-
+//Pazymiu rikiavimas, reikalingas medianos radimui 
 void Sorting(vector <int> &nd, int n)
 {
     for (int i = 0; i < n - 1; i++)
@@ -163,6 +166,7 @@ void Sorting(vector <int> &nd, int n)
 
 }
 
+//Studentu pavardziu rikiavimas, reikalingas programos isvedimui i ekrana.
 void Sorting(Student S[], int s)
 {
     for (int i = 0; i < s - 1; i++)
@@ -174,7 +178,7 @@ void Sorting(Student S[], int s)
     }
 }
 
-
+//Ieskomas ilgiausias vardas/pavarde, reikalingas programos isvedimui i ekrana.
 int Max(Student S[], int s, bool isTrue)
 {
     int max = 0;
@@ -195,6 +199,7 @@ int Max(Student S[], int s, bool isTrue)
     return max;
 }
 
+//Medianos skaiciavimas
 double Median(vector <int>nd, int n)
 {
     double median;
@@ -205,6 +210,7 @@ double Median(vector <int>nd, int n)
     return median;
 }
 
+//Isvedimo i ekrana funkcija
 void Print(Student S[], int s, string output)
 {
 
@@ -212,7 +218,7 @@ void Print(Student S[], int s, string output)
     Sorting(S, s);
     int maxLastName = Max(S, s, true);
     int maxName = Max(S, s, false);
-    cout << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl;
+    cout << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl;
 
     line.append(maxLastName + maxName + 40, '-');
     cout << line << endl;
@@ -224,6 +230,7 @@ void Print(Student S[], int s, string output)
     cout << endl;
 }
 
+//Atsitiktinio pazymio generavimas
 int RandomGrade()
 {
     int grade;
@@ -231,7 +238,7 @@ int RandomGrade()
     return grade;
 }
 
-
+//Tikrinama ar ivesta reiksme yra 'y' arba 'n'. Vykdoma tol, kol reiksme ivesta teisingai.
 string YN()
 {
     bool isCorrect = true;
@@ -256,7 +263,7 @@ string YN()
 
 int main()
 {
-
+    //Klaidu kodai, leidziantys vartotojui geriau suprasti, kur padare klaida.
     string inputName = " name";
     string inputLastName = " last name";
     string input_s = "Enter the number of students: ";
@@ -266,10 +273,13 @@ int main()
     string outputMedian = "median";
     string outputAverage = "mean";
 
+    //Reikalinga atsitiktinio pazymio generavimui
     srand(time(0));
 
-
+    //Pazymiu intervalas
     int maxGrade = 10, minGrade = 0;
+
+    double median;
 
     cout << "Do you want the final grade to be the mean (average)? (y/n) ";
     char yn = (YN())[0];
@@ -277,7 +287,9 @@ int main()
     char ynGrades;
     int s = CorrectNumber(input_s);
 
-    double median;
+    Student* S = new Student[s];
+
+    
 
     for (int i = 0; i < s; i++)
     {
