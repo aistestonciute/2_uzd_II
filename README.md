@@ -23,6 +23,8 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
   * Vardą
   * Galutinį pažymį (vidurkį/medianą).
 
+:heavy_exclamation_mark: **Pažymius vartotojas turi įvesti nenaudodamas tarpo - po kiekvieno įvesto pažymio vartotojas turi paspausti *enter*.** :heavy_exclamation_mark:
+
 :heavy_exclamation_mark: Galutinis vidurkis skaičiuojamas pagal formulę: **galutinis = 0.4 * vidurkis + 0.6 * egzaminas**.
 
 :heavy_exclamation_mark: Duomenys išvedami surikiuoti pagal studentų pavardes didėjimo tvarka.
