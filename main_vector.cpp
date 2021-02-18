@@ -1,13 +1,14 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <stdlib.h>
 #include <time.h> 
 #include <vector>
 #include <numeric>
 
-using namespace std;
+#define outputMedian  "median"
+#define outputAverage  "mean"
 
+using namespace std;
 
 // Struktura saugo vieno studento informacija
 struct Student
@@ -81,7 +82,7 @@ int CorrectNumber(string input)
 
 
 //Patikrina ar ivesta reiksme nera "stop" (naudojama pazymiu rasymui, kai nezinoma n)
-void Stop(string input, int maxGrade, int minGrade, vector<int> &nd, int& n)
+void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 {
     bool stop = true;
     int temp;
@@ -153,7 +154,7 @@ double Average(int n, vector <int> nd, int egz)
 }
 
 //Pazymiu rikiavimas, reikalingas medianos radimui 
-void Sorting(vector <int> &nd, int n)
+void Sorting(vector <int>& nd, int n)
 {
     for (int i = 0; i < n - 1; i++)
     {
@@ -167,7 +168,7 @@ void Sorting(vector <int> &nd, int n)
 }
 
 //Studentu pavardziu rikiavimas, reikalingas programos isvedimui i ekrana.
-void Sorting(Student S[], int s)
+void Sorting(vector <Student>& S, int s)
 {
     for (int i = 0; i < s - 1; i++)
     {
@@ -179,7 +180,7 @@ void Sorting(Student S[], int s)
 }
 
 //Ieskomas ilgiausias vardas/pavarde, reikalingas programos isvedimui i ekrana.
-int Max(Student S[], int s, bool isTrue)
+int Max(vector <Student>& S, int s, bool isTrue)
 {
     int max = 0;
 
@@ -211,7 +212,7 @@ double Median(vector <int>nd, int n)
 }
 
 //Isvedimo i ekrana funkcija
-void Print(Student S[], int s, string output)
+void Print(vector <Student> S, int s, string output)
 {
 
     string line = "";
@@ -260,91 +261,126 @@ string YN()
     return yn;
 }
 
-
-int main()
+void MainFunction(int i, vector <Student>& S, char yn)
 {
     //Klaidu kodai, leidziantys vartotojui geriau suprasti, kur padare klaida.
     string inputName = " name";
     string inputLastName = " last name";
-    string input_s = "Enter the number of students: ";
     string input_n = "Enter the number of homework tasks: ";
     string input_nd = "Enter homework grades: ";
     string input_egz = "Enter exam grade: ";
-    string outputMedian = "median";
-    string outputAverage = "mean";
 
-    //Reikalinga atsitiktinio pazymio generavimui
-    srand(time(0));
-
-    //Pazymiu intervalas
     int maxGrade = 10, minGrade = 1;
-
     double median;
 
-    cout << "Do you want the final grade to be the mean (average)? (y/n) ";
-    char yn = (YN())[0];
+    S[i].name = CorrectString(i, inputName);
+    S[i].lastName = CorrectString(i, inputLastName);
+    S[i].name[0] = toupper(S[i].name[0]);
+    S[i].lastName[0] = toupper(S[i].lastName[0]);
 
-    char ynGrades;
-    int s = CorrectNumber(input_s);
+    cout << "Do you want to enter the number of grades? (y/n) ";
+    char ynGrades = (YN()[0]);
 
-    Student* S = new Student[s];
-
-    
-
-    for (int i = 0; i < s; i++)
+    if (ynGrades == 'y')
     {
-        S[i].name = CorrectString(i, inputName);
-        S[i].name[0] = toupper(S[i].name[0]);
-        S[i].lastName = CorrectString(i, inputLastName);
-        S[i].lastName[0] = toupper(S[i].lastName[0]);
-        cout << "Do you want to enter the number of grades? (y/n) ";
+        S[i].n = CorrectNumber(input_n);
+        cout << "Do you want to enter grades manually? (y/n) ";
         ynGrades = (YN()[0]);
-
         if (ynGrades == 'y')
         {
-            S[i].n = CorrectNumber(input_n);
-            cout << "Do you want to enter grades manually? (y/n) ";
-            ynGrades = (YN()[0]);
 
-            if (ynGrades == 'y')
+            for (int j = 0; j < S[i].n; j++)
             {
-
-                for (int j = 0; j < S[i].n; j++)
-                {
-                    S[i].nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false));
-                }
+                S[i].nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false));
             }
+        }
 
-            else
-            {
-                for (int j = 0; j < S[i].n; j++) S[i].nd.push_back(RandomGrade());
-                cout << "Generated grades: ";
-                for (int j = 0; j < S[i].n - 1; j++) cout << S[i].nd[j] << ", ";
-                cout << S[i].nd[S[i].n - 1] << "." << endl;
-            }
+        else
+        {
+            for (int j = 0; j < S[i].n; j++) S[i].nd.push_back(RandomGrade());
+            cout << "Generated grades: ";
+            for (int j = 0; j < S[i].n - 1; j++) cout << S[i].nd[j] << ", ";
+            cout << S[i].nd[S[i].n - 1] << "." << endl;
+        }
 
-            cout << "Do you want to enter exam grade manually? (y/n) ";
-            ynGrades = (YN()[0]);
 
-            if (ynGrades == 'y') S[i].egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
-            else
-            {
-                S[i].egz = RandomGrade();
-                cout << "Generated exam grade: " << S[i].egz << endl;
-            }
+        
+    }
+
+    else
+    {
+        int j = 0;
+        cout << "Enter grades (to end the cycle, enter 'stop'). " << endl;
+        Stop(input_nd, maxGrade, minGrade, S[i].nd, S[i].n);
+    }
+
+
+    cout << "Do you want to enter exam grade manually? (y/n) ";
+    ynGrades = (YN()[0]);
+
+    if (ynGrades == 'y')  S[i].egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
+    else
+    {
+        S[i].egz = RandomGrade();
+        cout << "Generated exam grade: " << S[i].egz << endl;
+    }
+    if (yn == 'y')  S[i].final = Average(S[i].n, S[i].nd, S[i].egz);
+    else  S[i].final = Median(S[i].nd, S[i].n);
+}
+
+void ManualInput(int s, vector <Student>& S, char yn)
+{
+    for (int i = 0; i < s; i++) MainFunction(i, S, yn);
+}
+
+void UnknownInput(int& s, vector <Student>& S, char yn)
+{
+    bool Continue = true;
+
+    while (Continue)
+    {
+        MainFunction(s, S, yn);
+        cout << "Do you want to add another student? (y/n) ";
+        char ynContinue = (YN()[0]);
+        if (ynContinue == 'n')
+        {
+            Continue = false;
+            break;
         }
         else
         {
-            int j = 0;
-            cout << "Enter grades (to end the cycle, enter 'stop'). " << endl;
-            Stop(input_nd, maxGrade, minGrade, S[i].nd, S[i].n);
+            s++;
+            S.resize(s + 1);
         }
-
-        if (yn == 'y') S[i].final = Average(S[i].n, S[i].nd, S[i].egz);
-        else S[i].final = Median(S[i].nd, S[i].n);
-
     }
+}
 
+int main()
+{
+
+    string input_s = "Enter the number of students: ";
+    int s = 0;
+    vector <Student> S;
+    srand(time(0));
+
+    cout << "Do you want to enter the number of students? (y/n) ";
+    char ynInput = (YN())[0];
+
+    cout << "Do you want the final grade to be mean (average)? (y/n) ";
+    char yn = (YN())[0];
+
+    if (ynInput == 'y')
+    {
+        s = CorrectNumber(input_s);
+        S.resize(s + 1);
+        ManualInput(s, S, yn);
+    }
+    else
+    {
+        S.resize(s + 1);
+        UnknownInput(s, S, yn);
+        s++;
+    }
 
     if (yn == 'y')Print(S, s, outputAverage);
     else Print(S, s, outputMedian);
