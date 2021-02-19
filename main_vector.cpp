@@ -4,6 +4,8 @@
 #include <time.h> 
 #include <vector>
 #include <numeric>
+#include <stdlib.h>
+#include <stdio.h>
 
 #define outputMedian  "median"
 #define outputAverage  "mean"
