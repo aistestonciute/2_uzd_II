@@ -386,7 +386,8 @@ int main()
 
     if (yn == 'y')Print(S, s, outputAverage);
     else Print(S, s, outputMedian);
-
-
+    
+    delete S[];
+    
     return 0;
 }
