@@ -283,7 +283,7 @@ int main()
     int s = 0;
     vector <Student> Students;
     bool final;
-    
+    try {
         cout << "Do you want the final grade to be mean (average)? (y/n) ";
         char yn = (YN())[0];
 
@@ -309,7 +309,10 @@ int main()
         else
         {
             ifstream in;
-            in.open("kursiokai.txt");          
+            in.open("kursiokai.txt");
+
+            if (!in) throw 1;
+            
             string line;
             getline(in, line);
 
@@ -323,11 +326,15 @@ int main()
                 
                 while (in >> grade)
                 {
-                    student.nd.push_back(stoi(grade));
+                    if (grade.length() > 2) throw 3;
+                    if (!isdigit(grade[0]) || (grade.length() == 2  && !isdigit(grade[1]))) throw 4;
+                    if (stoi(grade) > 10 || stoi(grade) < 1) throw 5;
+                    else student.nd.push_back(stoi(grade));
                     n++;
                 }
                 n--;
                 student.n = n;
+                if(student.nd.size() == 0) throw 2;
                 student.nd.pop_back();
                 student.egz = stoi(grade);
                 if (final)  student.final = Average(student.n, student.nd, student.egz);
@@ -338,7 +345,31 @@ int main()
             in.close();
 
 
+    }
+        } 
+    catch (int e)
+    {
+        switch (e) {
+        case 1:
+            cout << "File not opened." << endl;
+            break;
+        case 2:
+            cout << "Empty lines in file." << endl;
+            break;
+        case 3:
+            cout << "Grade must contain only one or two symbols (digits)." << endl;
+            break;
+        case 4:
+            cout << "Grade must contain only digits." << endl;
+            break;
+        case 5:
+            cout << "Grade must be in range 1 to 10." << endl;
+            break;
+        default:
+            cout << "System failure." << endl;
+            exit(1);
         }
+    }
 
     if (final)Print(Students, s, outputAverage);
     else Print(Students, s, outputMedian);
