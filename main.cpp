@@ -40,7 +40,7 @@ string YN()
     return yn;
 }
 
-void Sorting(vector <int>& nd)
+void Sorting(vector <int> &nd)
 {
     sort(nd.begin(), nd.end());
 }
@@ -182,8 +182,8 @@ double Median(vector <int>nd, int n)
 {
     double median;
     Sorting(nd);
-    if (n % 2 != 0) median = nd[n / 2];
-    else median = (nd[n / 2 - 1] + nd[n / 2]) / 2.0;
+    if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];  
+    else median = (nd[nd.size() / 2 ] + nd[(nd.size() + 1) / 2]) / 2.0;
     return median;
 }
 
@@ -331,7 +331,7 @@ int main()
                 student.nd.pop_back();
                 student.egz = stoi(grade);
                 if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = (Median(student.nd, student.n));
+                else  student.final = (Median(student.nd, student.n)) *0.4 + student.egz * 0.6;
                 Students.push_back(student);
                 s++;
             }
