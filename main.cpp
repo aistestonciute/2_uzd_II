@@ -7,9 +7,10 @@
 #include <stdlib.h>
 #include <stdio.h>
 #include <algorithm>
+#include <fstream>
+#include <sstream> 
 
 using namespace std;
-
 
 struct Student
 {
@@ -28,8 +29,7 @@ string YN()
     string yn;
 
     do
-    {
-        cin >> yn;
+    {   cin >> yn;
         if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n')) isCorrect = true;
         else
         {
@@ -74,7 +74,7 @@ bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 
     else if (isCorrectValue == true && (stoi(temp) < minGrade || stoi(temp) > maxGrade) && maxGrade != 0)
     {   isCorrectValue = false;
-        cout << "Error! Number must be in range 0 to 10! ";
+        cout << "Error! Number must be in range 1 to 10! ";
     }
     return isCorrectValue;
 }
@@ -88,7 +88,7 @@ int CorrectNumber(string input, int maxGrade, int minGrade, bool stop)
     {   cout << input;
         cin >> temp;
         if (temp == "stop" && stop == true) break;
-    } while (!isCorrectNumber(temp, maxGrade, minGrade));
+    }   while (!isCorrectNumber(temp, maxGrade, minGrade));
 
     if (temp != "stop")x = stoi(temp);
     else x = -1;
@@ -123,7 +123,7 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 int RandomGrade()
 {
     int grade;
-    grade = 1 + rand() % ((10 + 1) - 1);
+    grade = 1 + rand() % 10;
     return grade;
 }
 
@@ -142,11 +142,11 @@ bool isCorrectString(string var)
     return isCorrect;
 }
 
-string CorrectString(int x, string input)
+string CorrectString(string input)
 {
     string var;
     do
-    {   cout << "Enter " << x + 1 << " student's" << input << " : ";
+    {   cout << "Enter student's" << input << ": ";
         cin >> var;
     } while (!isCorrectString(var));
 
@@ -184,23 +184,22 @@ double Median(vector <int>nd, int n)
     Sorting(nd);
     if (n % 2 != 0) median = nd[n / 2];
     else median = (nd[n / 2 - 1] + nd[n / 2]) / 2.0;
-
     return median;
 }
 
-void Print(vector <Student> S, int s, string output)
+void Print(vector <Student> Students, int s, string output)
 {
-    Sorting(S);
+    Sorting(Students);
     string line = "";
-    int maxLastName = Max(S, s, true);
-    int maxName = Max(S, s, false);
+    int maxLastName = Max(Students, s, true);
+    int maxName = Max(Students, s, false);
     line.append(maxLastName + maxName + 40, '-');
     cout << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
-    for (int i = 0; i < s; i++) cout << left << setw(maxLastName + 10) << S[i].lastName << setw(maxName + 10) << S[i].name << fixed << setprecision(2) << S[i].final << endl;
+    for (int i = 0; i < s; i++) cout << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
     cout << endl;
 }
 
-void MainFunction(int i, vector <Student>& S, char yn, bool final)
+void MainFunction(vector <Student>& Students, char yn, bool final)
 {
     string inputName = " name";
     string inputLastName = " last name";
@@ -208,122 +207,142 @@ void MainFunction(int i, vector <Student>& S, char yn, bool final)
     string input_nd = "Enter homework grades: ";
     string input_egz = "Enter exam grade: ";
 
+    Student S;
+
     int maxGrade = 10, minGrade = 1;
     double median;
 
-    S[i].name = CorrectString(i, inputName);
-    S[i].lastName = CorrectString(i, inputLastName);
-    S[i].name[0] = toupper(S[i].name[0]);
-    S[i].lastName[0] = toupper(S[i].lastName[0]);
+    S.name = CorrectString(inputName);
+    S.lastName = CorrectString(inputLastName);
+    S.name[0] = toupper(S.name[0]);
+    S.lastName[0] = toupper(S.lastName[0]);
 
     cout << "Do you want to enter the number of grades? (y/n) ";
     char ynGrades = (YN()[0]);
 
     if (ynGrades == 'y')
-    {   S[i].n = CorrectNumber(input_n);
+    {   S.n = CorrectNumber(input_n);
         cout << "Do you want to enter grades manually? (y/n) ";
         ynGrades = (YN()[0]);
-        if (ynGrades == 'y') { for (int j = 0; j < S[i].n; j++) S[i].nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
+        if (ynGrades == 'y') { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
         
-        else{   for (int j = 0; j < S[i].n; j++) S[i].nd.push_back(RandomGrade());
+        else{   for (int j = 0; j < S.n; j++) S.nd.push_back(RandomGrade());
                 cout << "Generated grades: ";
-                for (int j = 0; j < S[i].n - 1; j++) cout << S[i].nd[j] << ", ";
-                cout << S[i].nd[S[i].n - 1] << "." << endl;
+                for (int j = 0; j < S.n - 1; j++) cout << S.nd[j] << ", ";
+                cout << S.nd[S.n - 1] << "." << endl;
             }
     }
     else
     {   int j = 0;
         cout << "Enter grades (to end the cycle, enter 'stop'). " << endl;
-        Stop(input_nd, maxGrade, minGrade, S[i].nd, S[i].n);
+        Stop(input_nd, maxGrade, minGrade, S.nd, S.n);
     }
 
     cout << "Do you want to enter exam grade manually? (y/n) ";
     ynGrades = (YN()[0]);
 
-    if (ynGrades == 'y')  S[i].egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
+    if (ynGrades == 'y')  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
     else
-    {   S[i].egz = RandomGrade();
-        cout << "Generated exam grade: " << S[i].egz << endl;
+    {   S.egz = RandomGrade();
+        cout << "Generated exam grade: " << S.egz << endl;
     }
 
-    if (final)  S[i].final = Average(S[i].n, S[i].nd, S[i].egz);
-    else  S[i].final = Median(S[i].nd, S[i].n);
+    if (final)  S.final = Average(S.n, S.nd, S.egz);
+    else  S.final = (Median(S.nd, S.n));
+
+    Students.push_back(S);
+    S.nd.clear();
 }
 
-void ManualInput(int s, vector <Student>& S, char yn, bool final)
+void ManualInput(int s, vector <Student>& Students, char yn, bool final)
 {
-    for (int i = 0; i < s; i++) MainFunction(i, S, yn, final);
+    for (int i = 0; i < s; i++) MainFunction(Students, yn, final);
 }
 
-void UnknownInput(int& s, vector <Student>& S, char yn, bool final)
+void UnknownInput(int& s, vector <Student>& Students, char yn, bool final)
 {
     bool Continue = true;
 
     while (Continue)
-    {   MainFunction(s, S, yn, final);
+    {   MainFunction(Students, yn, final);
         cout << "Do you want to add another student? (y/n) ";
         char ynContinue = (YN()[0]);
         if (ynContinue == 'n')
         {   Continue = false;
             break;
         }
-        else
-        {   s++;
-            S.resize(s + 1);
-        }
+        else s++;   
     }
 }
 
 int main()
 {
-    srand(time(0));
-    
     string input_s = "Enter the number of students: ";
     string outputMedian = "median";
     string outputAverage = "mean";
     int s = 0;
-    vector <Student> S;
+    vector <Student> Students;
     bool final;
-
-    cout << "Do you want the final grade to be mean (average)? (y/n) ";
-    char yn = (YN())[0];
-
-    if (yn == 'y') final = true;
-    else final = false;
     
-    //cout << "Do you want to enter data manually? (y/n) ";
-    //yn = (YN())[0];
-    if (yn)
-    {   cout << "Do you want to enter the number of students? (y/n) ";
+        cout << "Do you want the final grade to be mean (average)? (y/n) ";
+        char yn = (YN())[0];
+
+        if (yn == 'y') final = true;
+        else final = false;
+
+        cout << "Do you want to enter data manually? (y/n) ";
         yn = (YN())[0];
 
         if (yn == 'y')
-        {   s = CorrectNumber(input_s);
-            S.resize(s + 1);
-            ManualInput(s, S, yn, final);
+        {
+            cout << "Do you want to enter the number of students? (y/n) ";
+            yn = (YN())[0];
+
+            if (yn == 'y')
+            {
+                s = CorrectNumber(input_s);
+                ManualInput(s, Students, yn, final);
+            }
+            else UnknownInput(++s, Students, yn, final);
+            
         }
         else
-        {   S.resize(s + 1);
-            UnknownInput(s, S, yn, final);
-            s++;
+        {
+            ifstream in;
+            in.open("kursiokai.txt");          
+            string line;
+            getline(in, line);
+
+            while (getline(in, line))
+            {
+                Student student;
+                string grade;
+                int n = 0;
+                istringstream in(line);
+                in >> student.name >> student.lastName;
+                
+                while (in >> grade)
+                {
+                    student.nd.push_back(stoi(grade));
+                    n++;
+                }
+                n--;
+                student.n = n;
+                student.nd.pop_back();
+                student.egz = stoi(grade);
+                if (final)  student.final = Average(student.n, student.nd, student.egz);
+                else  student.final = (Median(student.nd, student.n));
+                Students.push_back(student);
+                s++;
+            }
+            in.close();
+
+
         }
-    }
 
-   /* else
-    {
-	IMU DUOMENISIS .txt
-    }*/
+    if (final)Print(Students, s, outputAverage);
+    else Print(Students, s, outputMedian);
 
-   /* cout << "Do you want the final grade to be mean (average)? (y/n) ";
-    yn = (YN())[0];
-
-    if (yn == 'y')  S[i].final = Average(S[i].n, S[i].nd, S[i].egz);
-    else  S[i].final = Median(S[i].nd, S[i].n);
-    */
-    if (final)Print(S, s, outputAverage);
-    else Print(S, s, outputMedian);
-
-    S.clear();
-
+    Students.clear();
     return 0;
 }
