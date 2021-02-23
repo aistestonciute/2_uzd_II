@@ -40,7 +40,7 @@ string YN()
     return yn;
 }
 
-void Sorting(vector <int>& nd)
+void Sorting(vector <int> &nd)
 {
     sort(nd.begin(), nd.end());
 }
@@ -182,8 +182,8 @@ double Median(vector <int>nd, int n)
 {
     double median;
     Sorting(nd);
-    if (n % 2 != 0) median = nd[n / 2];
-    else median = (nd[n / 2 - 1] + nd[n / 2]) / 2.0;
+    if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];  
+    else median = (nd[nd.size() / 2 ] + nd[(nd.size() + 1) / 2]) / 2.0;
     return median;
 }
 
@@ -283,7 +283,7 @@ int main()
     int s = 0;
     vector <Student> Students;
     bool final;
-    try {
+    
         cout << "Do you want the final grade to be mean (average)? (y/n) ";
         char yn = (YN())[0];
 
@@ -309,10 +309,7 @@ int main()
         else
         {
             ifstream in;
-            in.open("kursiokai.txt");
-
-            if (!in) throw 1;
-            
+            in.open("seip.txt");          
             string line;
             getline(in, line);
 
@@ -326,50 +323,22 @@ int main()
                 
                 while (in >> grade)
                 {
-                    if (grade.length() > 2) throw 3;
-                    if (!isdigit(grade[0]) || (grade.length() == 2  && !isdigit(grade[1]))) throw 4;
-                    if (stoi(grade) > 10 || stoi(grade) < 1) throw 5;
-                    else student.nd.push_back(stoi(grade));
+                    student.nd.push_back(stoi(grade));
                     n++;
                 }
                 n--;
                 student.n = n;
-                if(student.nd.size() == 0) throw 2;
                 student.nd.pop_back();
                 student.egz = stoi(grade);
                 if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = (Median(student.nd, student.n));
+                else  student.final = (Median(student.nd, student.n)) *0.4 + student.egz * 0.6;
                 Students.push_back(student);
                 s++;
             }
             in.close();
 
 
-    }
-        } 
-    catch (int e)
-    {
-        switch (e) {
-        case 1:
-            cout << "File not opened." << endl;
-            break;
-        case 2:
-            cout << "Empty lines in file." << endl;
-            break;
-        case 3:
-            cout << "Grade must contain only one or two symbols (digits)." << endl;
-            break;
-        case 4:
-            cout << "Grade must contain only digits." << endl;
-            break;
-        case 5:
-            cout << "Grade must be in range 1 to 10." << endl;
-            break;
-        default:
-            cout << "System failure." << endl;
-            exit(1);
         }
-    }
 
     if (final)Print(Students, s, outputAverage);
     else Print(Students, s, outputMedian);
