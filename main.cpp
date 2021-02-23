@@ -309,7 +309,7 @@ int main()
         else
         {
             ifstream in;
-            in.open("seip.txt");          
+            in.open("kursiokai.txt");          
             string line;
             getline(in, line);
 
