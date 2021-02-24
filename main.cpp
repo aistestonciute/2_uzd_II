@@ -8,8 +8,7 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <chrono>
-#include <random>
+#include <time.h>
 
 #ifdef _WIN32
 #define WINPAUSE system("pause")
@@ -25,25 +24,29 @@ struct Student
     vector <int> nd;
     int egz;
     double final;
-
 };
 
-string YN()
+bool Confirm()
 {
     bool isCorrect = true;
+    bool confirm = true;
     string yn;
-
     do
     {
         cin >> yn;
-        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n')) isCorrect = true;
+        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n'))
+        {
+            isCorrect = true;
+            if (tolower(yn[0]) == 'y') confirm = true;
+            else confirm = false;
+        }
         else
         {
             cout << "Error! Enter letter 'y' (yes) or 'n' (no): ";
             isCorrect = false;
         }
     } while (!isCorrect);
-    return yn;
+    return confirm;
 }
 
 void Sorting(vector <int>& nd)
@@ -64,8 +67,8 @@ void Sorting(vector <Student>& S)
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 {
     bool isCorrectValue = true;
-
-    for (int i = 0; i < temp.length(); i++)
+    int length = temp.length();
+    for (int i = 0; i < length; i++)
     {
         if (!isdigit(temp[i]))
         {
@@ -135,18 +138,15 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    using hrClock = chrono::high_resolution_clock;
-    mt19937 mt(static_cast<long unsigned int> (hrClock::now().time_since_epoch().count()));
-    uniform_int_distribution<int> dist(1, 10);
-    int grade = dist(mt);
+    int grade = 1 + rand() % ((10 + 1) - 1);
     return grade;
 }
 
 bool isCorrectString(string var)
 {
     bool isCorrect = true;
-
-    for (int i = 0; i < var.length(); i++)
+    int length = var.length();
+    for (int i = 0; i < length; i++)
     {
         if (isalpha(var[i]) == false)
         {
@@ -201,7 +201,7 @@ double Median(vector <int>nd, int n)
     double median;
     Sorting(nd);
     if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];
-    else median = (nd[nd.size() / 2] + nd[nd.size() / 2 + 1]) / 2.0;
+    else median = (nd[nd.size() / 2] + nd[(nd.size() + 1) / 2]) / 2.0;
     return median;
 }
 
@@ -217,14 +217,13 @@ void Print(vector <Student> Students, int s, string output)
     cout << endl;
 }
 
-void MainFunction(vector <Student>& Students, char yn, bool final)
+void MainFunction(vector <Student>& Students, bool final)
 {
     string inputName = " name";
     string inputLastName = " last name";
     string input_n = "Enter the number of homework tasks: ";
-    string input_nd = "Enter homework grade: ";
+    string input_nd = "Enter homework grades: ";
     string input_egz = "Enter exam grade: ";
-
     Student S;
 
     int maxGrade = 10, minGrade = 1;
@@ -236,14 +235,12 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     S.lastName[0] = toupper(S.lastName[0]);
 
     cout << "Do you want to enter the number of grades? (y/n) ";
-    char ynGrades = (YN()[0]);
 
-    if (ynGrades == 'y')
+    if (Confirm())
     {
         S.n = CorrectNumber(input_n);
         cout << "Do you want to enter grades manually? (y/n) ";
-        ynGrades = (YN()[0]);
-        if (ynGrades == 'y') { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
+        if (Confirm()) { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
 
         else {
             for (int j = 0; j < S.n; j++) S.nd.push_back(RandomGrade());
@@ -260,9 +257,7 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     }
 
     cout << "Do you want to enter exam grade manually? (y/n) ";
-    ynGrades = (YN()[0]);
-
-    if (ynGrades == 'y')  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
+    if (Confirm())  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
     else
     {
         S.egz = RandomGrade();
@@ -276,21 +271,20 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     S.nd.clear();
 }
 
-void ManualInput(int s, vector <Student>& Students, char yn, bool final)
+void ManualInput(int s, vector <Student>& Students, bool final)
 {
-    for (int i = 0; i < s; i++) MainFunction(Students, yn, final);
+    for (int i = 0; i < s; i++) MainFunction(Students, final);
 }
 
-void UnknownInput(int& s, vector <Student>& Students, char yn, bool final)
+void UnknownInput(int& s, vector <Student>& Students, bool final)
 {
     bool Continue = true;
 
     while (Continue)
     {
-        MainFunction(Students, yn, final);
+        MainFunction(Students, final);
         cout << "Do you want to add another student? (y/n) ";
-        char ynContinue = (YN()[0]);
-        if (ynContinue == 'n')
+        if (!Confirm())
         {
             Continue = false;
             break;
@@ -308,66 +302,54 @@ int main()
     vector <Student> Students;
     bool final;
 
-    cout << "Do you want the final grade to be mean (average)? (y/n) ";
-    char yn = (YN())[0];
+        cout << "Do you want the final grade to be mean (average)? (y/n) ";
+        if (Confirm()) final = true;
+        else final = false;
 
-    if (yn == 'y') final = true;
-    else final = false;
-
-    cout << "Do you want to enter data manually? (y/n) ";
-    yn = (YN())[0];
-
-    if (yn == 'y')
-    {
-        cout << "Do you want to enter the number of students? (y/n) ";
-        yn = (YN())[0];
-
-        if (yn == 'y')
+        cout << "Do you want to enter data manually? (y/n) ";
+        if (Confirm())
         {
-            s = CorrectNumber(input_s);
-            ManualInput(s, Students, yn, final);
-        }
-        else UnknownInput(++s, Students, yn, final);
+            cout << "Do you want to enter the number of students? (y/n) ";
 
-    }
-    else
-    {
-        stringstream buffer;
-        ifstream in;
-        in.open("kursiokai.txt");
-        buffer << in.rdbuf();
-        in.close();
-        string line;
-        getline(buffer, line);
-
-        while (getline(buffer, line))
-        {
-            Student student;
-            string grade;
-            int n = 0;
-            stringstream in(line);
-            in >> student.name >> student.lastName;
-
-            while (in >> grade)
+            if (Confirm())
             {
-                student.nd.push_back(stoi(grade));
-                n++;
+                s = CorrectNumber(input_s);
+                ManualInput(s, Students, final);
             }
-            n--;
-            student.n = n;
-            student.nd.pop_back();
-            student.egz = stoi(grade);
-            if (final)  student.final = Average(student.n, student.nd, student.egz);
-            else  student.final = (Median(student.nd, student.n)) * 0.4 + student.egz * 0.6;
-            Students.push_back(student);
-            s++;
-        }
+            else UnknownInput(++s, Students, final);
 
-    }
+        }
+        else
+        {
+            stringstream buffer;
+            ifstream in;
+            in.open("kursiokai.txt");
+            buffer << in.rdbuf();
+            in.close();
+            string line;
+            getline(buffer, line);
+
+            while (getline(buffer, line))
+            {
+                Student student;
+                stringstream in(line);
+                int grade;
+                in >> student.name >> student.lastName;
+                while (in >> grade) student.nd.push_back(grade);            
+                student.nd.pop_back();
+                student.n = student.nd.size();
+                student.egz = grade;
+                if (final)  student.final = Average(student.n, student.nd, student.egz);
+                else  student.final = (Median(student.nd, student.n)) * 0.4 + student.egz * 0.6;
+                Students.push_back(student);
+            }
+            s = Students.size();
+        }
 
     if (final)Print(Students, s, outputAverage);
     else Print(Students, s, outputMedian);
 
     Students.clear();
     WINPAUSE;
+
 }
