@@ -1,8 +1,7 @@
 #include <iostream>
 #include <iomanip>
 #include <vector>
-#include <string>
-#include <time.h> 
+#include <string> 
 #include <numeric>
 #include <stdlib.h>
 #include <stdio.h>
@@ -113,8 +112,10 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    int grade;
-    grade = 1 + rand() % 10;
+    using hrClock = chrono::high_resolution_clock;
+    mt19937 mt(static_cast<long unsigned int> (hrClock::now().time_since_epoch().count()));
+    uniform_int_distribution<int> dist(1, 10);
+    int grade = dist(mt);
     return grade;
 }
 
