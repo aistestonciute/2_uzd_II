@@ -63,7 +63,7 @@ Sistema nutraukia darbą šiais atvejais:
 * Duomenų faile studento pažymių vietose esant raidei, žodžiui ar kitam neleistinam simboliui.
 * Duomenų faile studento pažymiui neatitinkant pažymių intervalo [0, 10].
 * Duomenų faile studento pažymių nebuvimui (tuščia eilutė).
-* Duomenų faile studento pažymiui esant iš daugiau nei 1 ar 2 simboliių.
+* Duomenų faile studento pažymiui esant iš daugiau nei 1 ar 2 simbolių.
 * Įvykus bet kokiai sisteminei klaidai.
 
 ## Įdiegimo instrukcija ##
