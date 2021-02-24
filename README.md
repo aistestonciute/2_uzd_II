@@ -41,7 +41,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 
 :heavy_exclamation_mark: **Pažymius vartotojas turi įvesti nenaudodamas tarpo - po kiekvieno įvesto pažymio vartotojas turi paspausti `enter`.**
 
-:heavy_exclamation_mark: Galutinis vidurkis skaičiuojamas pagal formulę: `galutinis = 0.4 * vidurkis + 0.6 * egzaminas`.
+:heavy_exclamation_mark: Galutinis vidurkis skaičiuojamas pagal formulę: `galutinis = 0.4 * vidurkis/mediana + 0.6 * egzaminas`.
 
 :heavy_exclamation_mark: Duomenys išvedami surikiuoti pagal studentų pavardes didėjimo tvarka.
 
@@ -54,13 +54,23 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 * Varototojui vietoje vardo ir pavardės įvedus ne žodį.
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) įvedus bet kokį kitą simbolį ar žodį;
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) arba `stop`, pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
-  
+
 :heavy_exclamation_mark: Pakartotinis įvedimas vyksta iki tol, kol vartotojas įveda teisingą norimą reikšmę.
+
+Sistema nutraukia darbą šiais atvejais:
+
+* Neegzistuojant `kursiokai.txt` duomenų failui.
+* Duomenų faile studento pažymių vietose esant raidei, žodžiui ar kitam neleistinam simboliui.
+* Duomenų faile studento pažymiui neatitinkant pažymių intervalo [0, 10].
+* Duomenų faile studento pažymių nebuvimui (tuščia eilutė).
+* Duomenų faile studento pažymiui esant iš daugiau nei 1 ar 2 simboliių.
+* Įvykus bet kokiai sisteminei klaidai.
 
 ## Įdiegimo instrukcija ##
 * Atsisiųskite norimą programos versiją (rekomenduojama atsisiųsti naujausią versiją) iš [Releases](https://github.com/aistestonciute/2_uzd/releases) aplanko.
 * Išarchyvuokite parsisiųstą failą.
-* Paleiskite main.cpp programą naudojantis C++ IDE (pvz. CodeBlocks arba Visual Studio) arba per komandinę eilutę.
+* Paleiskite programų failus per komandinę eilutę: 
+   `g++ -o main main.cpp functions.cpp` `./main`.
 
 ## Veikimo instrukcija ##
 * Paleidus programą sekite instrukcijas ir įveskite prašomus kintamuosius.
@@ -70,3 +80,5 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 
 * [v0.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.1) Pradinė sistemos versija. Programa yra realizuota dviem būdais: su `C` tipo masyvais ir su `vektoriais`. Programa su C tipo masyvais saugoma **main_array.cpp**, o su vektoriais - **main_vector.cpp**.
 * [v0.2](https://github.com/aistestonciute/2_uzd/releases/tag/0.2) Pridėta funkcija, leidžianti vartotojui pasirinkti kokiu būdu įvesti duomenis - rankiniu ar nuskaitymu iš tekstinio failo. Ši versija yra v0.1 patobulintas **main_vector.cpp** failas, realizuojantis programą tik su `<vector>` tipo konteineriais.
+  * [v0.2.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.2.1) Sutvarkytas duomenų paėmimas iš failo naudojant `buffer`. `RandomGrade()` funkcija nebenaudoja `rand()` - šiai funkcijai naudojamas atsitiktinių skaičių generavimas su `<random>`. Pridėta `WINPAUSE`.
+ * [v0.3](https://github.com/aistestonciute/2_uzd/releases/tag/0.3) Sukurtas `functions.cpp` failas, kuriame sudėtos visos [v0.2.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.2.1) realizuotos funkcijos. Sukurtas `functions.hpp` - saugantis funkcijų aprašymus ir `struct Student`. `main.cpp` pridėtas klaidų mėtymas ir gaudymas (`exceptional handling`) su klaidų išraiškomis (`error case`). Šiame faile taip pat ištrintos visos funkcijos, palikta tik `int main()`.
