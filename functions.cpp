@@ -8,28 +8,29 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <chrono>
-#include <random>
+#include <time.h>
+#include <cstdlib>
 #include "functions.hpp"
 
-
 using namespace std;
-
-string YN()
+bool Confirm()
 {
     bool isCorrect = true;
+    bool confirm = true;
     string yn;
-
     do
     {   cin >> yn;
-        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n')) isCorrect = true;
+        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n')) 
+        {   isCorrect = true;
+            if(tolower(yn[0]) == 'y') confirm = true;
+            else confirm = false;
+        }
         else
-        {
-            cout << "Error! Enter letter 'y' (yes) or 'n' (no): ";
+        {   cout << "Error! Enter letter 'y' (yes) or 'n' (no): ";
             isCorrect = false;
         }
     } while (!isCorrect);
-    return yn;
+    return confirm;
 }
 
 void Sorting(vector <int> &nd)
@@ -37,7 +38,7 @@ void Sorting(vector <int> &nd)
     sort(nd.begin(), nd.end());
 }
 
-bool CompareLastNames(Student a,  Student b)
+bool CompareLastNames(Student &a,  Student &b)
 {
     return a.lastName < b.lastName;
 }
@@ -50,8 +51,8 @@ void Sorting(vector <Student>& S)
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 {
     bool isCorrectValue = true;
-
-    for (int i = 0; i < temp.length(); i++)
+    int length = temp.length();
+    for (int i = 0;  i < length; i++)
     {
         if (!isdigit(temp[i]))
         {   isCorrectValue = false;
@@ -114,18 +115,15 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    using hrClock = chrono::high_resolution_clock;
-    mt19937 mt(static_cast<long unsigned int> (hrClock::now().time_since_epoch().count()));
-    uniform_int_distribution<int> dist(1, 10);
-    int grade = dist(mt);
+    int grade = 1 + rand() % ((10 + 1) - 1);
     return grade;
 }
 
 bool isCorrectString(string var)
 {
     bool isCorrect = true;
-
-    for (int i = 0; i < var.length(); i++)
+    int length = var.length();
+    for (int i = 0; i < length; i++)
     {   if (isalpha(var[i]) == false)
         {isCorrect = false;
             cout << "Error! Name must contain only letters! " << endl;
@@ -193,14 +191,13 @@ void Print(vector <Student> Students, int s, string output)
     cout << endl;
 }
 
-void MainFunction(vector <Student>& Students, char yn, bool final)
+void MainFunction(vector <Student>& Students, bool final)
 {
     string inputName = " name";
     string inputLastName = " last name";
     string input_n = "Enter the number of homework tasks: ";
     string input_nd = "Enter homework grades: ";
     string input_egz = "Enter exam grade: ";
-    srand(time(0));
     Student S;
 
     int maxGrade = 10, minGrade = 1;
@@ -212,13 +209,11 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     S.lastName[0] = toupper(S.lastName[0]);
 
     cout << "Do you want to enter the number of grades? (y/n) ";
-    char ynGrades = (YN()[0]);
 
-    if (ynGrades == 'y')
+    if (Confirm())
     {   S.n = CorrectNumber(input_n);
         cout << "Do you want to enter grades manually? (y/n) ";
-        ynGrades = (YN()[0]);
-        if (ynGrades == 'y') { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
+        if (Confirm()) { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
         
         else{   for (int j = 0; j < S.n; j++) S.nd.push_back(RandomGrade());
                 cout << "Generated grades: ";
@@ -233,9 +228,7 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     }
 
     cout << "Do you want to enter exam grade manually? (y/n) ";
-    ynGrades = (YN()[0]);
-
-    if (ynGrades == 'y')  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
+    if (Confirm())  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
     else
     {   S.egz = RandomGrade();
         cout << "Generated exam grade: " << S.egz << endl;
@@ -248,20 +241,19 @@ void MainFunction(vector <Student>& Students, char yn, bool final)
     S.nd.clear();
 }
 
-void ManualInput(int s, vector <Student>& Students, char yn, bool final)
+void ManualInput(int s, vector <Student>& Students, bool final)
 {
-    for (int i = 0; i < s; i++) MainFunction(Students, yn, final);
+    for (int i = 0; i < s; i++) MainFunction(Students, final);
 }
 
-void UnknownInput(int& s, vector <Student>& Students, char yn, bool final)
+void UnknownInput(int& s, vector <Student>& Students, bool final)
 {
     bool Continue = true;
 
     while (Continue)
-    {   MainFunction(Students, yn, final);
+    {   MainFunction(Students, final);
         cout << "Do you want to add another student? (y/n) ";
-        char ynContinue = (YN()[0]);
-        if (ynContinue == 'n')
+        if (!Confirm())
         {   Continue = false;
             break;
         }
