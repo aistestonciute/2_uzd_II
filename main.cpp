@@ -1,14 +1,15 @@
 #include <iostream>
 #include <iomanip>
 #include <string>
-#include <time.h> 
 #include <vector>
 #include <numeric>
 #include <stdlib.h>
 #include <stdio.h>
 #include <algorithm>
 #include <fstream>
-#include <sstream> 
+#include <sstream>
+#include <chrono>
+#include <random>
 
 #ifdef _WIN32
 #define WINPAUSE system("pause")
@@ -134,8 +135,10 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    int grade;
-    grade = 1 + rand() % 10;
+    using hrClock = chrono::high_resolution_clock;
+    mt19937 mt(static_cast<long unsigned int> (hrClock::now().time_since_epoch().count()));
+    uniform_int_distribution<int> dist(1, 10);
+    int grade = dist(mt);
     return grade;
 }
 
