@@ -1,6 +1,7 @@
 #include <iostream>
 #include <iomanip>
-#include <string> 
+#include <string>
+#include <time.h> 
 #include <vector>
 #include <numeric>
 #include <stdlib.h>
@@ -49,6 +50,7 @@ int main()
         }
         else
         {
+            stringstream buffer;
             ifstream in;
             in.open("kursiokai.txt");
             if (!in) throw 1;
