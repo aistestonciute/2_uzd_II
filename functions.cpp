@@ -1,13 +1,15 @@
 #include <iostream>
 #include <iomanip>
+#include <string>
 #include <vector>
-#include <string> 
 #include <numeric>
 #include <stdlib.h>
 #include <stdio.h>
 #include <algorithm>
 #include <fstream>
-#include <sstream> 
+#include <sstream>
+#include <chrono>
+#include <random>
 #include "functions.hpp"
 
 
