@@ -13,24 +13,24 @@ struct Student
     double final;
 };
 
-string YN();
-void Sorting(vector <int>& nd);
-bool CompareLastNames(Student a, Student b);
-void Sorting(vector <Student>& S);
-bool isCorrectNumber(string temp, int maxGrade, int minGrade);
-int CorrectNumber(string input, int maxGrade, int minGrade, bool stop);
-int CorrectNumber(string input);
-void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n);
+bool Confirm();
+void Sorting(vector <int>&);
+bool CompareLastNames(Student&, Student&);
+void Sorting(vector <Student>& );
+bool isCorrectNumber(string, int, int);
+int CorrectNumber(string, int, int, bool);
+int CorrectNumber(string);
+void Stop(string, int, int, vector<int>&, int& );
 int RandomGrade();
-bool isCorrectString(string var);
-string CorrectString(string input);
-int Sum(int n, vector<int> nd);
-double Average(int n, vector <int> nd, int egz);
-int Max(vector <Student>& S, int s, bool isTrue);
-double Median(vector <int>nd, int n);
-void Print(vector <Student> Students, int s, string output);
-void MainFunction(vector <Student>& Students, char yn, bool final);
-void ManualInput(int s, vector <Student>& Students, char yn, bool final);
-void UnknownInput(int& s, vector <Student>& Students, char yn, bool final);
+bool isCorrectString(string);
+string CorrectString(string);
+int Sum(int, vector<int>);
+double Average(int, vector <int>, int);
+int Max(vector <Student>&, int, bool);
+double Median(vector <int>, int);
+void Print(vector <Student>, int, string);
+void MainFunction(vector <Student>& , bool);
+void ManualInput(int, vector <Student>&, bool);
+void UnknownInput(int&, vector <Student>&, bool);
 
 #endif
