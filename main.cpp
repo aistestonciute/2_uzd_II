@@ -11,6 +11,10 @@
 #include <sstream> 
 #include "functions.hpp"
 
+#ifdef _WIN32
+#define WINPAUSE system("pause")
+#endif
+
 using namespace std;
 
 int main()
@@ -49,15 +53,17 @@ int main()
             ifstream in;
             in.open("kursiokai.txt");
             if (!in) throw 1;
+            buffer << in.rdbuf();
+            in.close();
             string line;
-            getline(in, line);
+            getline(buffer, line);
 
-            while (getline(in, line))
+            while (getline(buffer, line))
             {
                 Student student;
                 string grade;
                 int n = 0;
-                istringstream in(line);
+                stringstream in(line);
                 in >> student.name >> student.lastName;
 
                 while (in >> grade)
@@ -78,7 +84,7 @@ int main()
                 Students.push_back(student);
                 s++;
             }
-            in.close();
+
         }
 
     }
