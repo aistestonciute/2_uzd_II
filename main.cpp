@@ -119,5 +119,5 @@ int main()
     else Print(Students, s, outputMedian);
 
     Students.clear();
-    return 0;
+    WINPAUSE;
 }
