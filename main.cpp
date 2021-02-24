@@ -1,7 +1,6 @@
 #include <iostream>
 #include <iomanip>
-#include <string>
-#include <time.h> 
+#include <string> 
 #include <vector>
 #include <numeric>
 #include <stdlib.h>
