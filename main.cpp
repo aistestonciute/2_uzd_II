@@ -89,7 +89,7 @@ int main()
             cout << "File not opened." << endl;
             break;
         case 2:
-            cout << "Empty lines in file." << endl;
+            cout << "File contains illegal characters." << endl;
             break;
         case 3:
             cout << "Grade must be in range 1 to 10." << endl;
