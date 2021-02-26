@@ -27,7 +27,7 @@ string CorrectString(string);
 int Sum(int, vector<int>);
 double Average(int, vector <int>, int);
 int Max(vector <Student>&, int, bool);
-double Median(vector <int>, int);
+double Median(vector <int>, int, int);
 void Print(vector <Student>, int, string);
 void MainFunction(vector <Student>& , bool);
 void ManualInput(int, vector <Student>&, bool);
