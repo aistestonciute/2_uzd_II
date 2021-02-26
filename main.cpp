@@ -10,6 +10,7 @@
 #include <sstream>
 #include <time.h>
 #include <cstdlib>
+#include <cmath>
 #include "functions.hpp"
 
 #ifdef _WIN32
@@ -73,7 +74,7 @@ int main()
                 student.n = student.nd.size();
                 student.egz = grade;
                 if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = (Median(student.nd, student.n)) * 0.4 + student.egz * 0.6;
+                else  student.final = Median(student.nd, student.n, student.egz);
                 Students.push_back(student);
             }
             s = Students.size();
@@ -88,7 +89,7 @@ int main()
             cout << "File not opened." << endl;
             break;
         case 2:
-            cout << "Empty lines in file." << endl;
+            cout << "File contains illegal characters." << endl;
             break;
         case 3:
             cout << "Grade must be in range 1 to 10." << endl;
