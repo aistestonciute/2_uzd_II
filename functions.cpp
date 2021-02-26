@@ -10,6 +10,7 @@
 #include <sstream>
 #include <time.h>
 #include <cstdlib>
+#include <cmath>
 #include "functions.hpp"
 
 using namespace std;
@@ -155,7 +156,7 @@ int Sum(int n, vector<int> nd)
 double Average(int n, vector <int> nd, int egz)
 {
     double average = 0.4 * (Sum(n, nd) * 1.0 / n) + 0.6 * egz;
-    return average;
+    return round(average);
 }
 
 int Max(vector <Student>& S, int s, bool isTrue)
@@ -170,13 +171,13 @@ int Max(vector <Student>& S, int s, bool isTrue)
     return max;
 }
 
-double Median(vector <int>nd, int n)
+double Median(vector <int>nd, int n, int egz)
 {
     double median;
     Sorting(nd);
     if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];  
-    else median = (nd[nd.size() / 2 ] + nd[(nd.size() + 1) / 2]) / 2.0;
-    return median;
+    else median = ((nd[nd.size() / 2 ] + nd[(nd.size() + 1) / 2]) / 2.0) * 0.4 + egz * 0.6;
+    return round(median);
 }
 
 void Print(vector <Student> Students, int s, string output)
@@ -235,7 +236,7 @@ void MainFunction(vector <Student>& Students, bool final)
     }
 
     if (final)  S.final = Average(S.n, S.nd, S.egz);
-    else  S.final = (Median(S.nd, S.n));
+    else  S.final = (Median(S.nd, S.n, S.egz));
 
     Students.push_back(S);
     S.nd.clear();
