@@ -28,9 +28,14 @@ int Sum(int, vector<int>);
 double Average(int, vector <int>, int);
 int Max(vector <Student>&, int, bool);
 double Median(vector <int>, int, int);
-void Print(vector <Student>, int, string);
+void Print(vector <Student>, int, string, string);
 void MainFunction(vector <Student>& , bool);
 void ManualInput(int, vector <Student>&, bool);
 void UnknownInput(int&, vector <Student>&, bool);
-
+void GenerateFiles(int, vector <Student>&);
+Student GenerateStudent(int);
+void InputFiles(bool, vector <Student> &, string);
+void Group(vector <Student>, int, vector <Student> &, vector <Student> &);
+bool isWinner(int);
+int FileNumber();
 #endif
