@@ -17,6 +17,7 @@
 #define WINPAUSE system("pause")
 #endif
 
+
 using namespace std;
 
 int main()
@@ -28,7 +29,7 @@ int main()
     vector <Student> Students;
     bool final;
 
-    try {
+   
         cout << "Do you want the final grade to be mean (average)? (y/n) ";
         if (Confirm()) final = true;
         else final = false;
@@ -48,61 +49,54 @@ int main()
         }
         else
         {
-            stringstream buffer;
-            ifstream in;
-            in.open("kursiokai.txt");
-            if (!in) throw 1;
-            buffer << in.rdbuf();
-            in.close();
-            string line;
-            getline(buffer, line);
-
-            while (getline(buffer, line))
+            cout << "Do you want to generate .txt files? (y/n) "; 
+            if (Confirm())
             {
-                Student student;
-                stringstream in(line);
-                int grade;
-                in >> student.name >> student.lastName;
+                GenerateFiles(1000, Students);
+                GenerateFiles(10000, Students);
+                GenerateFiles(100000, Students);
+                GenerateFiles(1000000, Students);
+               // GenerateFiles(10000000, Students);
+                
+                cout << "To use kursiokai1000.txt enter '1'." << endl;
+                cout << "To use kursiokai10000.txt enter '2'." << endl;
+                cout << "To use kursiokai100000.txt enter '3'." << endl;
+                cout << "To use kursiokai1000000.txt enter '4'." << endl;
+               // cout << "To use kursiokai10000000.txt enter '5'." << endl;
+                
+                cout << "Enter which file do you want to use: ";
+                int fileNumber = FileNumber();
+                if (fileNumber == 1)InputFiles(final, Students, "kursiokai1000.txt");
+                if (fileNumber == 2)InputFiles(final, Students, "kursiokai10000.txt");
+                if (fileNumber == 3)InputFiles(final, Students, "kursiokai100000.txt");
+                if (fileNumber == 4)InputFiles(final, Students, "kursiokai1000000.txt");
+               // if (fileNumber == 5)InputFiles(final, Students, "kursiokai10000000.txt");            
 
-                while (in >> grade)
-                {
-                    if (grade > 10 || grade < 1) throw 3;
-                    else student.nd.push_back(grade);
-                }
-                if (student.nd.size() == 0) throw 2;
-                student.nd.pop_back();
-                student.n = student.nd.size();
-                student.egz = grade;
-                if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = Median(student.nd, student.n, student.egz);
-                Students.push_back(student);
             }
+            
+            else {InputFiles(final, Students, "kursiokai.txt"); }
             s = Students.size();
         }
 
-    }
-    catch (int e)
-    {
-        cout << "Error! ";
-        switch (e) {
-        case 1:
-            cout << "File not opened." << endl;
-            break;
-        case 2:
-            cout << "File contains illegal characters." << endl;
-            break;
-        case 3:
-            cout << "Grade must be in range 1 to 10." << endl;
-            break;
-        default:
-            cout << "System failure." << endl;
-            break;
-        }
-        exit(1);
-    }
-    if (final)Print(Students, s, outputAverage);
-    else Print(Students, s, outputMedian);
+    vector <Student> Winners;
+    vector <Student> Losers;
 
-    Students.clear();
+    Group(Students, s, Losers, Winners);
+    int w = Winners.size();
+    int l = Losers.size();
+
+    if (final)
+    {
+        Print(Winners, w, outputAverage, "Winners");
+        Print(Losers, l, outputAverage, "Losers");
+    }
+    else
+    { 
+        Print(Winners, w, outputMedian, "Winners");
+        Print(Losers, l, outputMedian, "Losers");
+    }
+
+    Winners.clear();
+    Losers.clear();
     WINPAUSE;
 }
