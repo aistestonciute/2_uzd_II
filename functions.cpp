@@ -13,6 +13,7 @@
 #include <cmath>
 #include "functions.hpp"
 
+
 using namespace std;
 bool Confirm()
 {
@@ -180,16 +181,19 @@ double Median(vector <int>nd, int n, int egz)
     return round(median);
 }
 
-void Print(vector <Student> Students, int s, string output)
+void Print(vector <Student> Students, int s, string output, string fileName)
 {
     Sorting(Students);
     string line = "";
     int maxLastName = Max(Students, s, true);
     int maxName = Max(Students, s, false);
+    string file = fileName + ".txt";
+    ofstream out(file);
     line.append(maxLastName + maxName + 40, '-');
-    cout << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
-    for (int i = 0; i < s; i++) cout << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
-    cout << endl;
+    out << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
+    for (int i = 0; i < s; i++) out << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
+    out << endl;
+    out.close();
 }
 
 void MainFunction(vector <Student>& Students, bool final)
@@ -260,4 +264,180 @@ void UnknownInput(int& s, vector <Student>& Students, bool final)
         }
         else s++;   
     }
+}
+
+void GenerateFiles(int s, vector <Student> &Students)
+{
+    string file = "kursiokai" + to_string(s) + ".txt";
+    int n = rand() % 20;
+    for (int i = 0; i < s; i ++) Students.push_back(GenerateStudent(n));
+    
+    ofstream out(file);
+        out << "Name" << setw(50) << "Last name" << setw(50) << "n  ND:  Egz" << endl;  
+        for (int i = 0; i < s; i ++)
+    {
+        out << Students[i].name << " " << setw(20) << Students[i].lastName << " ";
+        int n = Students[i].n;
+        for (int j = 0; j < n; j ++) out << Students[i].nd[j] << " ";
+        out << Students[i].egz << endl;
+    }
+    Students.clear();
+    out.close();
+}
+
+Student GenerateStudent(int n)
+{
+    Student student;
+        switch (rand()%20)
+    {
+    case 0: student.name = "Aiste"; break;
+    case 1: student.name = "Egle"; break;
+    case 2: student.name = "Austeja"; break;
+    case 3: student.name = "Guste"; break;
+    case 4: student.name = "Domantas"; break;
+    case 5: student.name = "Liucijus"; break;
+    case 6: student.name = "Lina"; break;
+    case 7: student.name = "Sarunas"; break;
+    case 8: student.name = "Saulius"; break;
+    case 9: student.name = "Kristijonas"; break;
+    case 10: student.name = "Kristina"; break;
+    case 11: student.name = "Ausra"; break;
+    case 12: student.name = "Srekas"; break;
+    case 13: student.name = "Ieva"; break;
+    case 14: student.name = "Angelas"; break;
+    case 15: student.name = "Vincas"; break;
+    case 16: student.name = "Tigra"; break;
+    case 17: student.name = "Justina"; break;
+    case 18: student.name = "Arijanas"; break;
+    case 19: student.name = "Orestas"; break;
+    }
+
+switch (*student.name.rbegin())
+    {
+        case 's':
+            switch(rand()%10)
+            {
+                case 0: student.lastName = "Dziobauskas"; break;
+                case 1: student.lastName = "Malunas"; break;
+                case 2: student.lastName = "Vasaris"; break;
+                case 3: student.lastName = "Matematikas"; break;
+                case 4: student.lastName = "Informatikas"; break;
+                case 5: student.lastName = "Strazdukas"; break;
+                case 6: student.lastName = "Popiezius"; break;
+                case 7: student.lastName = "Pelkauskas"; break;
+                case 8: student.lastName = "Adamsas"; break;
+                case 9: student.lastName = "Voras"; break;
+            }
+            break;
+        default:
+            switch(rand()%10)
+            {
+                case 0: student.lastName = "Liniuotyte"; break;
+                case 1: student.lastName = "Stalaite"; break;
+                case 2: student.lastName = "Gelaityte"; break;
+                case 3: student.lastName = "Pavardute"; break;
+                case 4: student.lastName = "Pavardauskaite"; break;
+                case 5: student.lastName = "Strazdukaite"; break;
+                case 6: student.lastName = "Vienuolele"; break;
+                case 7: student.lastName = "Bulgarija"; break;
+                case 8: student.lastName = "Kede"; break;
+                case 9: student.lastName = "Veidrodyte"; break;
+            }
+            break;
+    };
+
+    student.name+= to_string(rand()% n);
+    student.lastName+= to_string(rand()% n);
+    student.n = n;
+    for (int i = 0; i < n; i ++) student.nd.push_back(RandomGrade());
+    student.egz = RandomGrade();
+    return student;
+
+}
+
+void InputFiles(bool final, vector <Student> &Students, string file)
+{
+    stringstream buffer;
+    ifstream in;
+    try {
+    in.open(file);
+    if (!in) throw 1;
+    buffer << in.rdbuf();
+    in.close();
+    string line;
+    getline(buffer, line);
+
+    while (getline(buffer, line))
+            {
+                Student student;
+                stringstream in(line);
+                int grade;
+                in >> student.name >> student.lastName;
+
+                while (in >> grade)
+                {
+                    if (grade > 10 || grade < 1) throw 3;
+                    else student.nd.push_back(grade);
+                }
+                if (student.nd.size() == 0) throw 2;
+                student.nd.pop_back();
+                student.n = student.nd.size();
+                student.egz = grade;
+                if (final)  student.final = Average(student.n, student.nd, student.egz);
+                else  student.final = Median(student.nd, student.n, student.egz);
+                Students.push_back(student);
+            }
+    }
+        catch (int e)
+    {
+        cout << "Error! ";
+        switch (e) {
+        case 1:
+            cout << "File not opened." << endl;
+            break;
+        case 2:
+            cout << "File contains illegal characters." << endl;
+            break;
+        case 3:
+            cout << "Grade must be in range 1 to 10." << endl;
+            break;
+        default:
+            cout << "System failure." << endl;
+            break;
+        }
+        exit(1);
+    }   
+}
+
+void Group(vector <Student> Students, int s, vector <Student> &Losers, vector <Student> &Winners)
+{
+    for (int i = 0; i < s; i++) 
+    {
+        if(isWinner(Students[i].final)) Winners.push_back(Students[i]);
+        else Losers.push_back(Students[i]);
+    }
+    Students.clear();
+}
+
+bool isWinner(int final)
+{
+    bool winner = true;
+    if (final < 5) winner = false;
+    return winner;
+}
+
+int FileNumber()
+{
+    string number;
+    bool isCorrect = true;
+    do
+    {   cin >> number;
+        if (isdigit(number[0]) == true && (stoi(number) >= 1 && stoi(number) <= 5)) isCorrect = true;
+        else
+        {   cout << "Error! Enter a number in range 1 to 5: ";
+            isCorrect = false;
+        }
+    } while (!isCorrect);
+    int fileNumber = stoi(number);
+    return fileNumber;
 }
