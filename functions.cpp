@@ -266,93 +266,23 @@ void UnknownInput(int& s, vector <Student>& Students, bool final)
     }
 }
 
-void GenerateFiles(int s, vector <Student> &Students)
-{
+void GenerateStudent(int s)
+{ 
+    
     string file = "kursiokai" + to_string(s) + ".txt";
     int n = rand() % 20;
-    for (int i = 0; i < s; i ++) Students.push_back(GenerateStudent(n));
-    
+
     ofstream out(file);
-        out << "Name" << setw(50) << "Last name" << setw(50) << "n  ND:  Egz" << endl;  
-        for (int i = 0; i < s; i ++)
-    {
-        out << Students[i].name << " " << setw(20) << Students[i].lastName << " ";
-        int n = Students[i].n;
-        for (int j = 0; j < n; j ++) out << Students[i].nd[j] << " ";
-        out << Students[i].egz << endl;
+    out << "Name" << setw(23) << "Last name" << setw(17) << "Grades" << endl;  
+
+    for (int i = 0; i < s; i++){
+
+    out << "Vardenis" + to_string(i);
+    out << setw(20) << "Pavardenis" + to_string(i) << setw(10);
+    for (int j = 0; j <= n; j ++) out << RandomGrade() << setw(3);
+    out << endl; 
     }
-    Students.clear();
     out.close();
-}
-
-Student GenerateStudent(int n)
-{
-    Student student;
-        switch (rand()%20)
-    {
-    case 0: student.name = "Aiste"; break;
-    case 1: student.name = "Egle"; break;
-    case 2: student.name = "Austeja"; break;
-    case 3: student.name = "Guste"; break;
-    case 4: student.name = "Domantas"; break;
-    case 5: student.name = "Liucijus"; break;
-    case 6: student.name = "Lina"; break;
-    case 7: student.name = "Sarunas"; break;
-    case 8: student.name = "Saulius"; break;
-    case 9: student.name = "Kristijonas"; break;
-    case 10: student.name = "Kristina"; break;
-    case 11: student.name = "Ausra"; break;
-    case 12: student.name = "Srekas"; break;
-    case 13: student.name = "Ieva"; break;
-    case 14: student.name = "Angelas"; break;
-    case 15: student.name = "Vincas"; break;
-    case 16: student.name = "Tigra"; break;
-    case 17: student.name = "Justina"; break;
-    case 18: student.name = "Arijanas"; break;
-    case 19: student.name = "Orestas"; break;
-    }
-
-switch (*student.name.rbegin())
-    {
-        case 's':
-            switch(rand()%10)
-            {
-                case 0: student.lastName = "Dziobauskas"; break;
-                case 1: student.lastName = "Malunas"; break;
-                case 2: student.lastName = "Vasaris"; break;
-                case 3: student.lastName = "Matematikas"; break;
-                case 4: student.lastName = "Informatikas"; break;
-                case 5: student.lastName = "Strazdukas"; break;
-                case 6: student.lastName = "Popiezius"; break;
-                case 7: student.lastName = "Pelkauskas"; break;
-                case 8: student.lastName = "Adamsas"; break;
-                case 9: student.lastName = "Voras"; break;
-            }
-            break;
-        default:
-            switch(rand()%10)
-            {
-                case 0: student.lastName = "Liniuotyte"; break;
-                case 1: student.lastName = "Stalaite"; break;
-                case 2: student.lastName = "Gelaityte"; break;
-                case 3: student.lastName = "Pavardute"; break;
-                case 4: student.lastName = "Pavardauskaite"; break;
-                case 5: student.lastName = "Strazdukaite"; break;
-                case 6: student.lastName = "Vienuolele"; break;
-                case 7: student.lastName = "Bulgarija"; break;
-                case 8: student.lastName = "Kede"; break;
-                case 9: student.lastName = "Veidrodyte"; break;
-            }
-            break;
-    };
-
-    student.name+= to_string(rand()% n);
-    student.lastName+= to_string(rand()% n);
-    student.n = n;
-    for (int i = 0; i < n; i ++) student.nd.push_back(RandomGrade());
-    student.egz = RandomGrade();
-    return student;
-
 }
 
 void InputFiles(bool final, vector <Student> &Students, string file)
