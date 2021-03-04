@@ -8,11 +8,17 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <time.h>
 #include <cstdlib>
+#include <chrono>
 #include <cmath>
+#include <random>
 #include "functions.hpp"
 
+
+unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine generator (seed);
+
+  std::uniform_real_distribution<double> distribution (1, 11);
 
 using namespace std;
 bool Confirm()
@@ -117,8 +123,7 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    int grade = 1 + rand() % ((10 + 1) - 1);
-    return grade;
+    return distribution(generator);
 }
 
 bool isCorrectString(string var)
@@ -270,16 +275,18 @@ void GenerateStudent(int s)
 { 
     
     string file = "kursiokai" + to_string(s) + ".txt";
-    int n = rand() % 20;
+    int n = RandomGrade();
 
     ofstream out(file);
-    out << "Name" << setw(23) << "Last name" << setw(17) << "Grades" << endl;  
+    out << "Name" << setw(23) << "Last name" << setw(14);
+    for (int i = 0; i <= n; i ++) out << "ND" + to_string(i + 1) << setw(5); 
+    out << endl;
 
     for (int i = 0; i < s; i++){
 
     out << "Vardenis" + to_string(i);
     out << setw(20) << "Pavardenis" + to_string(i) << setw(10);
-    for (int j = 0; j <= n; j ++) out << RandomGrade() << setw(3);
+    for (int j = 0; j <= n; j ++) out << RandomGrade() << setw(5);
     out << endl; 
     }
     out.close();
