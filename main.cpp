@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <time.h>
+#include <random>
+#include <chrono>
 #include <cstdlib>
 #include <cmath>
 #include "functions.hpp"
@@ -55,8 +56,8 @@ int main()
                 GenerateStudent(1000);
                 GenerateStudent(10000);
                 GenerateStudent(100000);
-                GenerateStudent(1000000);
-                GenerateStudent(10000000);
+               // GenerateStudent(1000000);
+               // GenerateStudent(10000000);
                 
                 cout << "To use kursiokai1000.txt enter '1'." << endl;
                 cout << "To use kursiokai10000.txt enter '2'." << endl;
