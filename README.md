@@ -32,7 +32,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 
 #### Vartotojui pasirinkus duomenų įvedimą iš tekstinio failo ####
 
-* Vartotojas turi pasirinkti ar nori sugeneruoti failus. **Jei taip**, sugeneruojami 5 skirtingų dydžių failai (1000, 10000, 100000, 1000000, 10000000). Tuomet vartotojas turi pasirinkti iš kurio failo nori imti duomenis. **Jei vartotojas nenori generuoti failų,** duomenys imami iš `kursiokai.txt` failo.
+* Vartotojas turi pasirinkti ar nori sugeneruoti failus. **Jei taip**, sugeneruojamas failas  (galimi 5 skirtingų dydžių failai (1000, 10000, 100000, 1000000, 10000000)). Tuomet vartotojas turi pasirinkti iš kurio failo nori imti duomenis. **Jei vartotojas nenori generuoti failų,** duomenys imami iš `kursiokai.txt` failo.
 
 * Programa nuskaito duomenis iš aprašyto failo.
 
