@@ -8,10 +8,17 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <time.h>
 #include <cstdlib>
+#include <chrono>
 #include <cmath>
+#include <random>
 #include "functions.hpp"
+
+
+unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
+  std::default_random_engine generator (seed);
+
+  std::uniform_real_distribution<double> distribution (1, 11);
 
 using namespace std;
 bool Confirm()
@@ -46,7 +53,7 @@ bool CompareLastNames(Student &a,  Student &b)
 
 void Sorting(vector <Student>& S)
 {
-    sort(S.begin(), S.end(), CompareLastNames); 
+    sort(S.begin(), S.end(), CompareLastNames);
 }
 
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
@@ -116,8 +123,7 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
 
 int RandomGrade()
 {
-    int grade = 1 + rand() % ((10 + 1) - 1);
-    return grade;
+    return distribution(generator);
 }
 
 bool isCorrectString(string var)
@@ -159,7 +165,7 @@ double Average(int n, vector <int> nd, int egz)
     return round(average);
 }
 
-int Max(vector <Student>& S, int s, bool isTrue)
+int Max(vector <Student>& S, long int s, bool isTrue)
 {
     int max = 0;
 
@@ -180,16 +186,22 @@ double Median(vector <int>nd, int n, int egz)
     return round(median);
 }
 
-void Print(vector <Student> Students, int s, string output)
+void Print(vector <Student> Students, long int s, string output, string fileName)
 {
     Sorting(Students);
+    start = std::chrono::steady_clock::now();
     string line = "";
     int maxLastName = Max(Students, s, true);
     int maxName = Max(Students, s, false);
+    string file = fileName + ".txt";
+    ofstream out(file);
     line.append(maxLastName + maxName + 40, '-');
-    cout << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
-    for (int i = 0; i < s; i++) cout << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
-    cout << endl;
+    out << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
+    for (int i = 0; i < s; i++) out << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
+    out << endl;
+    out.close();
+    cout << "Time taken to output data ("<< fileName << "): " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+
 }
 
 void MainFunction(vector <Student>& Students, bool final)
@@ -242,12 +254,12 @@ void MainFunction(vector <Student>& Students, bool final)
     S.nd.clear();
 }
 
-void ManualInput(int s, vector <Student>& Students, bool final)
+void ManualInput(long int s, vector <Student>& Students, bool final)
 {
     for (int i = 0; i < s; i++) MainFunction(Students, final);
 }
 
-void UnknownInput(int& s, vector <Student>& Students, bool final)
+void UnknownInput(long int& s, vector <Student>& Students, bool final)
 {
     bool Continue = true;
 
@@ -261,3 +273,127 @@ void UnknownInput(int& s, vector <Student>& Students, bool final)
         else s++;   
     }
 }
+
+void GenerateStudent(long int s)
+{ 
+    
+     start = std::chrono::steady_clock::now();
+
+    string file = "kursiokai" + to_string(s) + ".txt";
+    int n = RandomGrade();
+
+    ofstream out(file);
+    out << "Name" << setw(23) << "Last name" << setw(14);
+    for (int i = 0; i < n; i ++) out << "Grade" + to_string(i + 1) << setw(8); 
+    out << "Exam" <<  endl;
+
+    for (int i = 0; i < s; i++){
+
+    out << "Vardenis" + to_string(i);
+    out << setw(20) << "Pavardenis" + to_string(i) << setw(10);
+    for (int j = 0; j <= n; j ++) out << RandomGrade() << setw(8);
+    out << endl; 
+    }
+    out.close();
+    cout << "Time taken to generate students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+}
+
+void InputFiles(bool final, vector <Student> &Students, string file)
+{
+    start = std::chrono::steady_clock::now();
+    stringstream buffer;
+    ifstream in;
+    try {
+    in.open(file);
+    if (!in) throw 1;
+    buffer << in.rdbuf();
+    in.close();
+    string line;
+    getline(buffer, line);
+
+    while (getline(buffer, line))
+            {
+                Student student;
+                stringstream in(line);
+                int grade;
+                in >> student.name >> student.lastName;
+
+                while (in >> grade)
+                {
+                    if (grade > 10 || grade < 1) throw 3;
+                    else student.nd.push_back(grade);
+                }
+                if (student.nd.size() == 0) throw 2;
+                student.nd.pop_back();
+                student.n = student.nd.size();
+                student.egz = grade;
+                if (final)  student.final = Average(student.n, student.nd, student.egz);
+                else  student.final = Median(student.nd, student.n, student.egz);
+                Students.push_back(student);
+            }
+    }
+        catch (int e)
+    {
+        cout << "Error! ";
+        switch (e) {
+        case 1:
+            cout << "File not opened." << endl;
+            break;
+        case 2:
+            cout << "File contains illegal characters." << endl;
+            break;
+        case 3:
+            cout << "Grade must be in range 1 to 10." << endl;
+            break;
+        default:
+            cout << "System failure." << endl;
+            break;
+        }
+        exit(1);
+    } 
+    cout << "Time taken to input data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+
+    long long s = Students.size();
+
+    vector <Student> Winners;
+    vector <Student> Losers;
+    Group(Students, s, Losers, Winners);
+
+    long int w = Winners.size();
+    long int l = Losers.size();
+
+    if (final)
+    {
+        Print(Winners, w, outputAverage, "Winners");
+        Print(Losers, l, outputAverage, "Losers");
+    }
+    else
+    { 
+        Print(Winners, w, outputMedian, "Winners");
+        Print(Losers, l, outputMedian, "Losers");
+    }
+
+    Winners.clear();
+    Losers.clear();
+}
+
+void Group(vector <Student> Students, long int s, vector <Student> &Losers, vector <Student> &Winners)
+{
+    start = std::chrono::steady_clock::now();
+    for (int i = 0; i < s; i++) 
+    {
+        if(isWinner(Students[i].final)) Winners.push_back(Students[i]);
+        else Losers.push_back(Students[i]);
+    }
+    Students.clear();
+    cout << "Time taken to group students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+
+}
+
+bool isWinner(int final)
+{
+    bool winner = true;
+    if (final < 5) winner = false;
+    return winner;
+}
+

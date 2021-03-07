@@ -8,7 +8,8 @@
 #include <algorithm>
 #include <fstream>
 #include <sstream>
-#include <time.h>
+#include <random>
+#include <chrono>
 #include <cstdlib>
 #include <cmath>
 #include "functions.hpp"
@@ -17,18 +18,17 @@
 #define WINPAUSE system("pause")
 #endif
 
+
 using namespace std;
 
 int main()
 {
     string input_s = "Enter the number of students: ";
-    string outputMedian = "median";
-    string outputAverage = "mean";
-    int s = 0;
+    long int s = 0;
     vector <Student> Students;
     bool final;
 
-    try {
+   
         cout << "Do you want the final grade to be mean (average)? (y/n) ";
         if (Confirm()) final = true;
         else final = false;
@@ -48,61 +48,26 @@ int main()
         }
         else
         {
-            stringstream buffer;
-            ifstream in;
-            in.open("kursiokai.txt");
-            if (!in) throw 1;
-            buffer << in.rdbuf();
-            in.close();
-            string line;
-            getline(buffer, line);
+                    cout << endl << "> Using kursiokai1000.txt." << endl;
+                    GenerateStudent(1000);
+                    InputFiles(final, Students, "kursiokai1000.txt");
+                
+                    cout << endl << "> Using kursiokai10000.txt." << endl;
+                    GenerateStudent(10000);
+                    InputFiles(final, Students, "kursiokai10000.txt");
+                
+                    cout << endl << "> Using kursiokai100000.txt." << endl;
+                    GenerateStudent(100000);
+                    InputFiles(final, Students, "kursiokai100000.txt");
 
-            while (getline(buffer, line))
-            {
-                Student student;
-                stringstream in(line);
-                int grade;
-                in >> student.name >> student.lastName;
+                    cout << endl << "> Using kursiokai1000000.txt." << endl;
+                    GenerateStudent(1000000);
+                    InputFiles(final, Students, "kursiokai1000000.txt");
 
-                while (in >> grade)
-                {
-                    if (grade > 10 || grade < 1) throw 3;
-                    else student.nd.push_back(grade);
-                }
-                if (student.nd.size() == 0) throw 2;
-                student.nd.pop_back();
-                student.n = student.nd.size();
-                student.egz = grade;
-                if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = Median(student.nd, student.n, student.egz);
-                Students.push_back(student);
-            }
-            s = Students.size();
+                    cout << endl << "> Using kursiokai10000000.txt." << endl;
+                    GenerateStudent(10000000);
+                    InputFiles(final, Students, "kursiokai10000000.txt");          
         }
-
-    }
-    catch (int e)
-    {
-        cout << "Error! ";
-        switch (e) {
-        case 1:
-            cout << "File not opened." << endl;
-            break;
-        case 2:
-            cout << "File contains illegal characters." << endl;
-            break;
-        case 3:
-            cout << "Grade must be in range 1 to 10." << endl;
-            break;
-        default:
-            cout << "System failure." << endl;
-            break;
-        }
-        exit(1);
-    }
-    if (final)Print(Students, s, outputAverage);
-    else Print(Students, s, outputMedian);
-
-    Students.clear();
+    
     WINPAUSE;
 }

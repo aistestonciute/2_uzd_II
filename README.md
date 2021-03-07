@@ -6,7 +6,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 ### Pagrindinis ###
 
 * Vartotojas turi pasirinkti ar nori apskaičiuoti **vidurkį/medianą**.
-* Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinio failo **"kursiokai.txt"**).
+* Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinių **sugeneruotų failų**).
 
 #### Vartotojui pasirinkus duomenų įvedimą rankiniu būdu ####
 
@@ -32,7 +32,9 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 
 #### Vartotojui pasirinkus duomenų įvedimą iš tekstinio failo ####
 
-* Programa nuskaito duomenis iš aprašyto failo.
+* Sugeneruojamas failai  (galimi 5 skirtingų dydžių failai (1000, 10000, 100000, 1000000, 10000000)).   
+
+* Programa nuskaito duomenis iš kiekvieno failo.
 
 * Programa apskaičiuoja vidurkį/medianą ir išveda duomenis:
   * Pavardę
@@ -44,6 +46,8 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 :heavy_exclamation_mark: Galutinis vidurkis skaičiuojamas pagal formulę: `galutinis = 0.4 * vidurkis/mediana + 0.6 * egzaminas`.
 
 :heavy_exclamation_mark: Duomenys išvedami surikiuoti pagal studentų pavardes didėjimo tvarka.
+
+:heavy_exclamation_mark: Programa išveda studentų duomenis į du failus: `Winners.txt` ir `Losers.txt`. Jei studento vidurkis < 5, jis pridedamas į `Losers` grupę, jei vidurkis didesnis - į `Winners` grupę.
 
 ### Papildomas ###
 
@@ -59,7 +63,7 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 
 Sistema nutraukia darbą šiais atvejais:
 
-* Neegzistuojant `kursiokai.txt` duomenų failui.
+* Neegzistuojant duomenų failui.
 * Duomenų faile studento pažymių vietose esant raidei, žodžiui ar kitam neleistinam simboliui.
 * Duomenų faile studento pažymiui neatitinkant pažymių intervalo [0, 10].
 * Duomenų faile studento pažymių nebuvimui (tuščia eilutė).
@@ -81,3 +85,4 @@ Sistema nutraukia darbą šiais atvejais:
 * [v0.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.1) Pradinė sistemos versija. Programa yra realizuota dviem būdais: su `C` tipo masyvais ir su `vektoriais`. Programa su C tipo masyvais saugoma **main_array.cpp**, o su vektoriais - **main_vector.cpp**.
 * [v0.2](https://github.com/aistestonciute/2_uzd/releases/tag/0.2) Pridėta funkcija, leidžianti vartotojui pasirinkti kokiu būdu įvesti duomenis - rankiniu ar nuskaitymu iš tekstinio failo. Ši versija yra v0.1 patobulintas **main_vector.cpp** failas, realizuojantis programą tik su `<vector>` tipo konteineriais. Sutvarkytas duomenų paėmimas iš failo naudojant `buffer`. Pridėta `WINPAUSE`.
  * [v0.3](https://github.com/aistestonciute/2_uzd/releases/tag/0.3) Sukurtas `functions.cpp` failas, kuriame sudėtos visos [v0.2](https://github.com/aistestonciute/2_uzd/releases/tag/0.2) realizuotos funkcijos. Sukurtas `functions.hpp` - saugantis funkcijų aprašymus ir `struct Student`. `main.cpp` pridėtas klaidų mėtymas ir gaudymas (`exceptional handling`) su klaidų išraiškomis (`error case`). Šiame faile taip pat ištrintos visos funkcijos, palikta tik `int main()`.
+ * [v0.4](https://github.com/aistestonciute/2_uzd/releases/tag/0.4) Sukurta funkcija, leidžianti generuoti duomenų failus (dydžiai: 1000, 10000, 100000, 1000000, 10000000). Pridėtas studentų rūšiavimas į dvi grupes: `Winners` (studento vidurkis >= 5) ir `Losers` (studento vidurkis < 5). `Winners` ir `Losers` išvedami į du atskirus failus: `Winners.txt` ir `Losers.txt` Atliktas programos veikimo (spartos) analizė su kiekvienu sugeneruotu duomenų failu.
