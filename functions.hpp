@@ -41,5 +41,4 @@ void GenerateStudent(long int);
 void InputFiles(bool, vector <Student> &, string);
 void Group(vector <Student>, long int, vector <Student> &, vector <Student> &);
 bool isWinner(int);
-int FileNumber();
 #endif
