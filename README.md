@@ -6,7 +6,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 ### Pagrindinis ###
 
 * Vartotojas turi pasirinkti ar nori apskaičiuoti **vidurkį/medianą**.
-* Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinio failo **"kursiokai.txt"** arba **sugeneruoto pasirinkto** failo).
+* Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinių **sugeneruotų failų**).
 
 #### Vartotojui pasirinkus duomenų įvedimą rankiniu būdu ####
 
@@ -32,9 +32,9 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 
 #### Vartotojui pasirinkus duomenų įvedimą iš tekstinio failo ####
 
-* Vartotojas turi pasirinkti ar nori sugeneruoti failus. **Jei taip**, sugeneruojamas failas  (galimi 5 skirtingų dydžių failai (1000, 10000, 100000, 1000000, 10000000)). Tuomet vartotojas turi pasirinkti iš kurio failo nori imti duomenis. **Jei vartotojas nenori generuoti failų,** duomenys imami iš `kursiokai.txt` failo.
+* Sugeneruojamas failai  (galimi 5 skirtingų dydžių failai (1000, 10000, 100000, 1000000, 10000000)).   
 
-* Programa nuskaito duomenis iš aprašyto failo.
+* Programa nuskaito duomenis iš kiekvieno failo.
 
 * Programa apskaičiuoja vidurkį/medianą ir išveda duomenis:
   * Pavardę
@@ -58,7 +58,6 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 * Varototojui vietoje vardo ir pavardės įvedus ne žodį.
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) įvedus bet kokį kitą simbolį ar žodį;
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) arba `stop`, pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
-* Vartotojui vietoje failo numerio (`1 - 5`) įvedus bet kokį kitą simbolį ar žodį.
 
 :heavy_exclamation_mark: Pakartotinis įvedimas vyksta iki tol, kol vartotojas įveda teisingą norimą reikšmę.
 
