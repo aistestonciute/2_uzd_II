@@ -15,6 +15,9 @@ struct Student
     double final;
 };
 
+#define outputMedian  "median"
+#define outputAverage  "mean"
+
 bool Confirm();
 void Sorting(vector <int>&);
 bool CompareLastNames(Student&, Student&);
