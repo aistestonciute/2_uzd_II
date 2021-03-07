@@ -200,7 +200,7 @@ void Print(vector <Student> Students, long int s, string output, string fileName
     for (int i = 0; i < s; i++) out << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
     out << endl;
     out.close();
-    cout << "Time taken to output data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+    cout << "Time taken to output data ("<< fileName << "): " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
 
 }
 
@@ -397,18 +397,3 @@ bool isWinner(int final)
     return winner;
 }
 
-int FileNumber()
-{
-    string number;
-    bool isCorrect = true;
-    do
-    {   cin >> number;
-        if (isdigit(number[0]) == true && (stoi(number) >= 1 && stoi(number) <= 5)) isCorrect = true;
-        else
-        {   cout << "Error! Enter a number in range 1 to 5: ";
-            isCorrect = false;
-        }
-    } while (!isCorrect);
-    int fileNumber = stoi(number);
-    return fileNumber;
-}
