@@ -53,7 +53,10 @@ bool CompareLastNames(Student &a,  Student &b)
 
 void Sorting(vector <Student>& S)
 {
-    sort(S.begin(), S.end(), CompareLastNames); 
+    start = std::chrono::steady_clock::now();
+    sort(S.begin(), S.end(), CompareLastNames);
+    cout << "Time taken to sort students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+
 }
 
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
@@ -189,6 +192,7 @@ double Median(vector <int>nd, int n, int egz)
 void Print(vector <Student> Students, long int s, string output, string fileName)
 {
     Sorting(Students);
+    start = std::chrono::steady_clock::now();
     string line = "";
     int maxLastName = Max(Students, s, true);
     int maxName = Max(Students, s, false);
@@ -199,6 +203,8 @@ void Print(vector <Student> Students, long int s, string output, string fileName
     for (int i = 0; i < s; i++) out << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
     out << endl;
     out.close();
+    cout << "Time taken to output data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+
 }
 
 void MainFunction(vector <Student>& Students, bool final)
@@ -349,7 +355,29 @@ void InputFiles(bool final, vector <Student> &Students, string file)
         exit(1);
     } 
     cout << "Time taken to input data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
-  
+
+    long long s = Students.size();
+
+    vector <Student> Winners;
+    vector <Student> Losers;
+    Group(Students, s, Losers, Winners);
+
+    long int w = Winners.size();
+    long int l = Losers.size();
+
+    if (final)
+    {
+        Print(Winners, w, outputAverage, "Winners");
+        Print(Losers, l, outputAverage, "Losers");
+    }
+    else
+    { 
+        Print(Winners, w, outputMedian, "Winners");
+        Print(Losers, l, outputMedian, "Losers");
+    }
+
+    Winners.clear();
+    Losers.clear();
 }
 
 void Group(vector <Student> Students, long int s, vector <Student> &Losers, vector <Student> &Winners)
