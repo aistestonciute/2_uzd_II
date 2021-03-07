@@ -53,10 +53,7 @@ bool CompareLastNames(Student &a,  Student &b)
 
 void Sorting(vector <Student>& S)
 {
-    start = std::chrono::steady_clock::now();
     sort(S.begin(), S.end(), CompareLastNames);
-    cout << "Time taken to sort students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
-
 }
 
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
