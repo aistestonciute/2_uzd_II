@@ -1,26 +1,11 @@
-#include <iostream>
-#include <iomanip>
-#include <string>
-#include <vector>
-#include <numeric>
-#include <stdlib.h>
-#include <stdio.h>
-#include <algorithm>
-#include <fstream>
-#include <sstream>
-#include <cstdlib>
-#include <chrono>
-#include <cmath>
-#include <random>
 #include "functions.hpp"
-
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
   std::default_random_engine generator (seed);
 
   std::uniform_real_distribution<double> distribution (1, 11);
 
-using namespace std;
+
 bool Confirm()
 {
     bool isCorrect = true;
@@ -41,19 +26,9 @@ bool Confirm()
     return confirm;
 }
 
-void Sorting(vector <int> &nd)
+void Sorting(vector <int>& nd)
 {
     sort(nd.begin(), nd.end());
-}
-
-bool CompareLastNames(Student &a,  Student &b)
-{
-    return a.lastName < b.lastName;
-}
-
-void Sorting(vector <Student>& S)
-{
-    sort(S.begin(), S.end(), CompareLastNames);
 }
 
 bool isCorrectNumber(string temp, int maxGrade, int minGrade)
@@ -75,7 +50,7 @@ bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 
     else if (isCorrectValue == true && (stoi(temp) < minGrade || stoi(temp) > maxGrade) && maxGrade != 0)
     {   isCorrectValue = false;
-        cout << "Error! Number must be in range 1 to 10! ";
+        cout << "Error! Number must be in range " << minGrade << " to "<< maxGrade << "! ";
     }
     return isCorrectValue;
 }
@@ -165,17 +140,6 @@ double Average(int n, vector <int> nd, int egz)
     return round(average);
 }
 
-int Max(vector <Student>& S, long int s, bool isTrue)
-{
-    int max = 0;
-
-    for (int i = 0; i < s; i++)
-    {
-        if (S[i].lastName.length() > max && isTrue) max = S[i].lastName.length();
-        else if (S[i].name.length() > max && !isTrue) max = S[i].name.length();
-    }
-    return max;
-}
 
 double Median(vector <int>nd, int n, int egz)
 {
@@ -186,64 +150,78 @@ double Median(vector <int>nd, int n, int egz)
     return round(median);
 }
 
-void Print(vector <Student> Students, long int s, string output, string fileName)
+int Max(long int s)
 {
-    Sorting(Students);
-    start = std::chrono::steady_clock::now();
+    int digits = 0;
+    while (s != 0)
+    {
+        s = s / 10;
+        ++digits;
+    }
+    return digits;
+}
+
+
+template <class T>
+void Print(T Students, long int s, string output, string fileName)
+{
+    sort(Students.begin(), Students.end(), CompareLastNames());
     string line = "";
-    int maxLastName = Max(Students, s, true);
-    int maxName = Max(Students, s, false);
+    int maxName = 8 + Max(s);
+    int maxLastName = 10 + Max(s);
     string file = fileName + ".txt";
     ofstream out(file);
     line.append(maxLastName + maxName + 40, '-');
     out << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
-    for (int i = 0; i < s; i++) out << left << setw(maxLastName + 10) << Students[i].lastName << setw(maxName + 10) << Students[i].name << fixed << setprecision(2) << Students[i].final << endl;
+    for (int i = 0; i < s; i++)
+    {
+        out << left << setw(maxLastName + 10) << Students.back().lastName << setw(maxName + 10) << Students.back().name << fixed << setprecision(2) << Students.back().final << endl;
+        Students.pop_back();
+    }
     out << endl;
     out.close();
-    cout << "Time taken to output data ("<< fileName << "): " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
-
 }
 
-void MainFunction(vector <Student>& Students, bool final)
+template <class T>
+void MainFunction(T& Students, bool final)
 {
-    string inputName = " name";
-    string inputLastName = " last name";
-    string input_n = "Enter the number of homework tasks: ";
-    string input_nd = "Enter homework grades: ";
-    string input_egz = "Enter exam grade: ";
     Student S;
 
     int maxGrade = 10, minGrade = 1;
     double median;
 
-    S.name = CorrectString(inputName);
-    S.lastName = CorrectString(inputLastName);
+    S.name = CorrectString(" name");
+    S.lastName = CorrectString(" last name");
     S.name[0] = toupper(S.name[0]);
     S.lastName[0] = toupper(S.lastName[0]);
 
     cout << "Do you want to enter the number of grades? (y/n) ";
 
     if (Confirm())
-    {   S.n = CorrectNumber(input_n);
+    {
+        S.n = CorrectNumber("Enter the number of homework tasks: ");
         cout << "Do you want to enter grades manually? (y/n) ";
-        if (Confirm()) { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber(input_nd, maxGrade, minGrade, false)); }
-        
-        else{   for (int j = 0; j < S.n; j++) S.nd.push_back(RandomGrade());
-                cout << "Generated grades: ";
-                for (int j = 0; j < S.n - 1; j++) cout << S.nd[j] << ", ";
-                cout << S.nd[S.n - 1] << "." << endl;
-            }
+        if (Confirm()) { for (int j = 0; j < S.n; j++) S.nd.push_back(CorrectNumber("Enter homework grades : ", maxGrade, minGrade, false)); }
+
+        else {
+            for (int j = 0; j < S.n; j++) S.nd.push_back(RandomGrade());
+            cout << "Generated grades: ";
+            for (int j = 0; j < S.n - 1; j++) cout << S.nd[j] << ", ";
+            cout << S.nd[S.n - 1] << "." << endl;
+        }
     }
     else
-    {   int j = 0;
+    {
+        int j = 0;
         cout << "Enter grades (to end the cycle, enter 'stop'). " << endl;
-        Stop(input_nd, maxGrade, minGrade, S.nd, S.n);
+        Stop("Enter homework grades : ", maxGrade, minGrade, S.nd, S.n);
     }
 
     cout << "Do you want to enter exam grade manually? (y/n) ";
-    if (Confirm())  S.egz = CorrectNumber(input_egz, maxGrade, minGrade, false);
+    if (Confirm())  S.egz = CorrectNumber("Enter exam grade: ", maxGrade, minGrade, false);
     else
-    {   S.egz = RandomGrade();
+    {
+        S.egz = RandomGrade();
         cout << "Generated exam grade: " << S.egz << endl;
     }
 
@@ -254,31 +232,33 @@ void MainFunction(vector <Student>& Students, bool final)
     S.nd.clear();
 }
 
-void ManualInput(long int s, vector <Student>& Students, bool final)
+
+template <class T>
+void ManualInput(long int s, T& Students, bool final)
 {
     for (int i = 0; i < s; i++) MainFunction(Students, final);
 }
 
-void UnknownInput(long int& s, vector <Student>& Students, bool final)
+template <class T>
+void UnknownInput(long int& s, T& Students, bool final)
 {
     bool Continue = true;
 
     while (Continue)
-    {   MainFunction(Students, final);
+    {
+        MainFunction(Students, final);
         cout << "Do you want to add another student? (y/n) ";
         if (!Confirm())
-        {   Continue = false;
+        {
+            Continue = false;
             break;
         }
-        else s++;   
+        else s++;
     }
 }
 
 void GenerateStudent(long int s)
 { 
-    
-     start = std::chrono::steady_clock::now();
-
     string file = "kursiokai" + to_string(s) + ".txt";
     int n = RandomGrade();
 
@@ -295,44 +275,45 @@ void GenerateStudent(long int s)
     out << endl; 
     }
     out.close();
-    cout << "Time taken to generate students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
 }
 
-void InputFiles(bool final, vector <Student> &Students, string file)
+
+template <class T>
+void InputFiles(T& Students, string file, bool final)
 {
     start = std::chrono::steady_clock::now();
     stringstream buffer;
     ifstream in;
     try {
-    in.open(file);
-    if (!in) throw 1;
-    buffer << in.rdbuf();
-    in.close();
-    string line;
-    getline(buffer, line);
+        in.open(file);
+        if (!in) throw 1;
+        buffer << in.rdbuf();
+        in.close();
+        string line;
+        getline(buffer, line);
 
-    while (getline(buffer, line))
+        while (getline(buffer, line))
+        {
+            Student student;
+            stringstream in(line);
+            int grade;
+            in >> student.name >> student.lastName;
+
+            while (in >> grade)
             {
-                Student student;
-                stringstream in(line);
-                int grade;
-                in >> student.name >> student.lastName;
-
-                while (in >> grade)
-                {
-                    if (grade > 10 || grade < 1) throw 3;
-                    else student.nd.push_back(grade);
-                }
-                if (student.nd.size() == 0) throw 2;
-                student.nd.pop_back();
-                student.n = student.nd.size();
-                student.egz = grade;
-                if (final)  student.final = Average(student.n, student.nd, student.egz);
-                else  student.final = Median(student.nd, student.n, student.egz);
-                Students.push_back(student);
+                if (grade > 10 || grade < 1) throw 3;
+                else student.nd.push_back(grade);
             }
+            if (student.nd.size() == 0) throw 2;
+            student.nd.pop_back();
+            student.n = student.nd.size();
+            student.egz = grade;
+            if (final)  student.final = Average(student.n, student.nd, student.egz);
+            else  student.final = Median(student.nd, student.n, student.egz);
+            Students.push_back(student);
+        }
     }
-        catch (int e)
+    catch (int e)
     {
         cout << "Error! ";
         switch (e) {
@@ -350,50 +331,99 @@ void InputFiles(bool final, vector <Student> &Students, string file)
             break;
         }
         exit(1);
-    } 
+    }
     cout << "Time taken to input data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
 
-    long long s = Students.size();
+}
 
-    vector <Student> Winners;
-    vector <Student> Losers;
-    Group(Students, s, Losers, Winners);
+void Container(int container)
+{
+    if (container == 1) { cout << endl << "> Using deque" << endl; deque <Student> Students; deque <Student> Winners; MAIN(Students, Winners); }
+    else if (container == 2) { cout << endl << "> Using list" << endl; list <Student> Students; list <Student> Winners; MAIN(Students, Winners); }
+    else if (container == 3) { cout << endl << "> Using vector" << endl; vector <Student> Students; vector <Student> Winners; MAIN(Students, Winners); }
+}
 
-    long int w = Winners.size();
-    long int l = Losers.size();
+bool Final()
+{
+    bool final;
+    cout << "Do you want the final grade to be mean (average)? (y/n) ";
+    if (Confirm()) final = true;
+    else final = false;
+    return final;
+}
+
+template <class T>
+void Manual(long int &s, T &Students, bool final)
+{
+    cout << "Do you want to enter the number of students? (y/n) ";
+    if (Confirm())
+    {
+        s = CorrectNumber("Enter the number of students: ");
+        ManualInput(s, Students, final);
+    }
+    else UnknownInput(++s, Students, final);
+}
+
+template <class T>
+void Automatic(long int &s, T &Students, bool final)
+{
+    cout << endl << "> Choose file:" << endl
+        << "1. kursiokai1000.txt" << endl
+        << "2. kursiokai10000.txt" << endl
+        << "3. kursiokai100000.txt" << endl
+        << "4. kursiokai1000000.txt" << endl
+        << "5. kursiokai10000000.txt" << endl;
+
+    int fileSize = CorrectNumber("Enter number: ", 5, 1, false);
+    if (fileSize == 1) s = 1000;
+    else if (fileSize == 2) s = 10000;
+    else if (fileSize == 3) s = 100000;
+    else if (fileSize == 4) s = 1000000;
+    else if (fileSize == 5) s = 10000000;
+
+    cout << endl << "> Using kursiokai" + to_string(s) + ".txt" << endl;
+    GenerateStudent(s);
+    InputFiles(Students, "kursiokai" + to_string(s) + ".txt", final);
+}
+
+template <class T>
+void MAIN(T Students, T Winners)
+{  
+    long int s = 0;
+    bool final = Final();
+
+    cout << "Do you want to enter data manually? (y/n) ";
+    if (Confirm()) Manual(s, Students, final);
+    else Automatic(s, Students, final);
+    Group(Students, Winners, s);
 
     if (final)
     {
-        Print(Winners, w, outputAverage, "Winners");
-        Print(Losers, l, outputAverage, "Losers");
+        Print(Winners, Winners.size(), outputAverage, "Winners");
+        Print(Students, Students.size(), outputAverage, "Losers");
     }
     else
-    { 
-        Print(Winners, w, outputMedian, "Winners");
-        Print(Losers, l, outputMedian, "Losers");
+    {
+        Print(Winners, Winners.size(), outputMedian, "Winners");
+        Print(Students, Students.size(), outputMedian, "Losers");
     }
 
+    Students.clear();
     Winners.clear();
-    Losers.clear();
+    
 }
 
-void Group(vector <Student> Students, long int s, vector <Student> &Losers, vector <Student> &Winners)
+bool isWinner(Student const &S)
+{
+   return (S.final >= 5);
+}
+
+template <class T>
+void Group(T& Students, T& Winners, long int s)
 {
     start = std::chrono::steady_clock::now();
-    for (int i = 0; i < s; i++) 
-    {
-        if(isWinner(Students[i].final)) Winners.push_back(Students[i]);
-        else Losers.push_back(Students[i]);
-    }
-    Students.clear();
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), isWinner);
+    Students.erase(remove_if(Students.begin(), Students.end(), isWinner), Students.end());
     cout << "Time taken to group students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
-
-}
-
-bool isWinner(int final)
-{
-    bool winner = true;
-    if (final < 5) winner = false;
-    return winner;
 }
 
