@@ -140,7 +140,6 @@ double Average(int n, vector <int> nd, int egz)
     return round(average);
 }
 
-
 double Median(vector <int>nd, int n, int egz)
 {
     double median;
@@ -171,7 +170,7 @@ void Print(T Students, long int s, string output, string fileName)
     ofstream out(file);
     line.append(maxLastName + maxName + 40, '-');
     out << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
-    for (int i = 0; i < s; i++)
+    for (long int i = 0; i < s; i++)
     {
         out << left << setw(maxLastName + 10) << Students.back().lastName << setw(maxName + 10) << Students.back().name << fixed << setprecision(2) << Students.back().final << endl;
         Students.pop_back();
@@ -331,7 +330,7 @@ void InputFiles(T& Students, string file, bool final)
         }
         exit(1);
     }
-    cout << "Time taken to input data: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+    cout << "Time taken to input data: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
 
 }
 
@@ -449,6 +448,6 @@ void Group(T& Students, T& Winners, long int s)
     start = std::chrono::steady_clock::now();
     copy_if(Students.begin(), Students.end(), back_inserter(Winners), isWinner);
     Students.erase(remove_if(Students.begin(), Students.end(), isWinner), Students.end());
-    cout << "Time taken to group students: " << chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() << " ms" << endl;
+    cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
 }
 
