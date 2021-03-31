@@ -32,10 +32,10 @@ struct Student
 };
 
 
-/*struct CompareLastNames
+struct CompareLastNames
 {
-    bool operator()(const Student& a, const Student& b) { return (a.lastName.compare(b.lastName)); }
-};*/
+    bool operator()(const Student& a, const Student& b) { return (b.lastName.compare(a.lastName)); }
+};
 
 #define outputMedian  "median"
 #define outputAverage  "mean"
@@ -73,7 +73,10 @@ void InputFiles(T&, string, bool);
 void Container(int);
 
 template <class T>
-void MAIN(T, T);
+void PrePrint(bool final, T Winners, T Students);
+
+template <class T>
+void MAIN(T&, T&, bool);
 bool Final();
 
 template <class T>
