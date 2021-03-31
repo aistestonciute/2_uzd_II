@@ -161,11 +161,9 @@ int Max(long int s)
     return digits;
 }
 
-
 template <class T>
 void Print(T Students, long int s, string output, string fileName)
 {
-    sort(Students.begin(), Students.end(), CompareLastNames());
     string line = "";
     int maxName = 8 + Max(s);
     int maxLastName = 10 + Max(s);
@@ -180,6 +178,7 @@ void Print(T Students, long int s, string output, string fileName)
     }
     out << endl;
     out.close();
+    Students.clear();
 }
 
 template <class T>
@@ -338,9 +337,35 @@ void InputFiles(T& Students, string file, bool final)
 
 void Container(int container)
 {
-    if (container == 1) { cout << endl << "> Using deque" << endl; deque <Student> Students; deque <Student> Winners; MAIN(Students, Winners); }
-    else if (container == 2) { cout << endl << "> Using list" << endl; list <Student> Students; list <Student> Winners; MAIN(Students, Winners); }
-    else if (container == 3) { cout << endl << "> Using vector" << endl; vector <Student> Students; vector <Student> Winners; MAIN(Students, Winners); }
+    bool final = Final();
+    if (container == 1) 
+    {
+        deque <Student> Students; 
+        deque <Student> Winners;
+        MAIN(Students, Winners, final);
+        sort(Students.begin(), Students.end(), CompareLastNames());
+        sort(Winners.begin(), Winners.end(), CompareLastNames());
+        PrePrint(final, Winners, Students);
+    }
+    else if (container == 2) 
+    {
+        list <Student> Students;
+        list <Student> Winners; 
+        MAIN(Students, Winners, final); 
+        Students.sort(CompareLastNames());
+        Winners.sort(CompareLastNames());
+        PrePrint(final, Winners, Students);
+    }
+    else if (container == 3)
+    {
+        vector <Student> Students;
+        vector <Student> Winners;
+        MAIN(Students, Winners, final);
+        sort(Students.begin(), Students.end(), CompareLastNames());
+        sort(Winners.begin(), Winners.end(), CompareLastNames());
+        PrePrint(final, Winners, Students);
+    }
+    
 }
 
 bool Final()
@@ -386,17 +411,10 @@ void Automatic(long int &s, T &Students, bool final)
     InputFiles(Students, "kursiokai" + to_string(s) + ".txt", final);
 }
 
+
 template <class T>
-void MAIN(T Students, T Winners)
-{  
-    long int s = 0;
-    bool final = Final();
-
-    cout << "Do you want to enter data manually? (y/n) ";
-    if (Confirm()) Manual(s, Students, final);
-    else Automatic(s, Students, final);
-    Group(Students, Winners, s);
-
+void PrePrint(bool final, T Winners, T Students)
+{
     if (final)
     {
         Print(Winners, Winners.size(), outputAverage, "Winners");
@@ -407,10 +425,17 @@ void MAIN(T Students, T Winners)
         Print(Winners, Winners.size(), outputMedian, "Winners");
         Print(Students, Students.size(), outputMedian, "Losers");
     }
+}
 
-    Students.clear();
-    Winners.clear();
-    
+template <class T>
+void MAIN(T &Students, T &Winners, bool final)
+{  
+    long int s = 0;
+
+    cout << "Do you want to enter data manually? (y/n) ";
+    if (Confirm()) Manual(s, Students, final);
+    else Automatic(s, Students, final);
+    Group(Students, Winners, s);
 }
 
 bool isWinner(Student const &S)
