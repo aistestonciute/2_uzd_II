@@ -341,7 +341,8 @@ void Container(int container)
     {
         deque <Student> Students; 
         deque <Student> Winners;
-        MAIN(Students, Winners, final);
+        deque <Student> Losers;
+        MAIN(Students, Winners, final, Losers);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -350,7 +351,8 @@ void Container(int container)
     {
         list <Student> Students;
         list <Student> Winners; 
-        MAIN(Students, Winners, final); 
+        list <Student> Losers;
+        MAIN(Students, Winners, final, Losers); 
         Students.sort(CompareLastNames());
         Winners.sort(CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -359,7 +361,8 @@ void Container(int container)
     {
         vector <Student> Students;
         vector <Student> Winners;
-        MAIN(Students, Winners, final);
+        vector <Student> Losers;
+        MAIN(Students, Winners, final, Losers);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -412,42 +415,58 @@ void Automatic(long int &s, T &Students, bool final)
 
 
 template <class T>
-void PrePrint(bool final, T Winners, T Students)
+void PrePrint(bool final, T Winners, T Losers)
 {
     if (final)
     {
         Print(Winners, Winners.size(), outputAverage, "Winners");
-        Print(Students, Students.size(), outputAverage, "Losers");
+        Print(Losers, Losers.size(), outputAverage, "Losers");
     }
     else
     {
         Print(Winners, Winners.size(), outputMedian, "Winners");
-        Print(Students, Students.size(), outputMedian, "Losers");
+        Print(Losers, Losers.size(), outputMedian, "Losers");
     }
 }
 
 template <class T>
-void MAIN(T &Students, T &Winners, bool final)
+void MAIN(T &Students, T &Winners, bool final, T& Losers)
 {  
     long int s = 0;
 
     cout << "Do you want to enter data manually? (y/n) ";
     if (Confirm()) Manual(s, Students, final);
     else Automatic(s, Students, final);
-    Group(Students, Winners, s);
-}
-
-bool isWinner(Student const &S)
-{
-   return (S.final >= 5);
+    
+    cout << endl <<"> Choose grouping strategy:" << endl
+    << "1. Grouping with two containers" << endl
+    << "2. Grouping with one container" << endl;
+    int strategy = CorrectNumber("Enter number: ", 2, 1, false);
+    if (strategy == 1) Group(Students, Winners, s, Losers);
+    else Group(Students, Winners, s);
+    
 }
 
 template <class T>
 void Group(T& Students, T& Winners, long int s)
 {
     start = std::chrono::steady_clock::now();
-    copy_if(Students.begin(), Students.end(), back_inserter(Winners), isWinner);
-    Students.erase(remove_if(Students.begin(), Students.end(), isWinner), Students.end());
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [] (Student const &S){return S.final >=5;});
+    Students.erase(remove_if(Students.begin(), Students.end(), [] (Student const &S){return S.final >=5;}), Students.end());
     cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+}
+
+template <class T>
+void Group(T& Students, T& Winners, long int s, T& Losers)
+{
+    start = std::chrono::steady_clock::now();
+    for (long int i = s; i > 0; i--)
+    {
+        copy_if(Students.begin(), Students.end(), back_inserter(Winners), [] (Student const &S){return S.final >=5;});
+        copy_if(Students.begin(), Students.end(), back_inserter(Losers), [] (Student const &S){return S.final < 5;});
+    }
+
+    cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+
 }
 
