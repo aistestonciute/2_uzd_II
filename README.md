@@ -59,6 +59,7 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 * Varototojui vietoje vardo ir pavardės įvedus ne žodį.
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) įvedus bet kokį kitą simbolį ar žodį;
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) arba `stop`, pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
+* Vartotojui pasirinkimo vietoje įvedus ne pasirinkimų intervale esantį skaičių ar kitą neleistiną simbolį.
 
 :heavy_exclamation_mark: Pakartotinis įvedimas vyksta iki tol, kol vartotojas įveda teisingą norimą reikšmę.
 
