@@ -76,7 +76,7 @@ template <class T>
 void PrePrint(bool final, T Winners, T Students);
 
 template <class T>
-void MAIN(T&, T&, bool, T&);
+void MAIN(T&, T&, bool, T&, bool);
 bool Final();
 
 template <class T>
@@ -90,4 +90,8 @@ void Group(T&, T&, long int);
 
 template <class T>
 void Group(T& Students, T& Winners, long int s, T& Losers);
+
+template <class T>
+void Group(T&, T&, long int, bool);
+
 #endif
