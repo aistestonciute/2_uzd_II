@@ -342,7 +342,7 @@ void Container(int container)
         deque <Student> Students; 
         deque <Student> Winners;
         deque <Student> Losers;
-        MAIN(Students, Winners, final, Losers);
+        MAIN(Students, Winners, final, Losers, false);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -352,7 +352,7 @@ void Container(int container)
         list <Student> Students;
         list <Student> Winners; 
         list <Student> Losers;
-        MAIN(Students, Winners, final, Losers); 
+        MAIN(Students, Winners, final, Losers, false); 
         Students.sort(CompareLastNames());
         Winners.sort(CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -362,7 +362,7 @@ void Container(int container)
         vector <Student> Students;
         vector <Student> Winners;
         vector <Student> Losers;
-        MAIN(Students, Winners, final, Losers);
+        MAIN(Students, Winners, final, Losers, true);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -430,7 +430,7 @@ void PrePrint(bool final, T Winners, T Losers)
 }
 
 template <class T>
-void MAIN(T &Students, T &Winners, bool final, T& Losers)
+void MAIN(T &Students, T &Winners, bool final, T& Losers, bool isVector)
 {  
     long int s = 0;
 
@@ -443,8 +443,14 @@ void MAIN(T &Students, T &Winners, bool final, T& Losers)
     << "2. Grouping with one container" << endl;
     int strategy = CorrectNumber("Enter number: ", 2, 1, false);
     if (strategy == 1) Group(Students, Winners, s, Losers);
-    else Group(Students, Winners, s);
-    
+    else if(isVector)
+    {
+        cout << "Do you want to group using optimized grouping? (y/n)" << endl;
+        if(Confirm()) Group(Students, Winners, s, isVector);  
+        else return;   
+    }
+
+    else Group(Students, Winners, s);  
 }
 
 template <class T>
@@ -469,4 +475,14 @@ void Group(T& Students, T& Winners, long int s, T& Losers)
     cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
 
 }
+
+template <class T>
+void Group(T& Students, T& Winners, long int s, bool isVector)
+{
+    start = std::chrono::steady_clock::now();
+    remove_copy_if(Students.begin(), Students.end(), back_inserter(Winners), [] (Student const &S){return S.final >= 5;});
+    cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+}
+
+
 
