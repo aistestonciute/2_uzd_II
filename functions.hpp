@@ -73,10 +73,17 @@ void InputFiles(T&, string, bool);
 void Container(int);
 
 template <class T>
-void PrePrint(bool final, T Winners, T Students);
+void PrePrint(bool, T, T);
 
 template <class T>
-void MAIN(T&, T&, bool, T&, bool);
+void MAIN(T&, T&, bool);
+
+template <class T>
+void MAIN(T&, T&, T&, int, bool);
+
+template <class T>
+void AutomaticOrManual(T&, bool);
+
 bool Final();
 
 template <class T>
@@ -86,12 +93,13 @@ template <class T>
 void Automatic(long int&, T&, bool);
 
 template <class T>
-void Group(T&, T&, long int);
+void Group(T&, T&);
 
 template <class T>
-void Group(T& Students, T& Winners, long int s, T& Losers);
+void Group(T&, T&, T&);
 
 template <class T>
-void Group(T&, T&, long int, bool);
+void Group(T&, T&, T&, bool);
+int StrategyNumber();
 
 #endif
