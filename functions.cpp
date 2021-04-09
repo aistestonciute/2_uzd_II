@@ -1,9 +1,9 @@
 #include "functions.hpp"
 
 unsigned seed = std::chrono::system_clock::now().time_since_epoch().count();
-  std::default_random_engine generator (seed);
+std::default_random_engine generator(seed);
 
-  std::uniform_real_distribution<double> distribution (1, 11);
+std::uniform_real_distribution<double> distribution(1, 11);
 
 
 bool Confirm()
@@ -12,14 +12,17 @@ bool Confirm()
     bool confirm = true;
     string yn;
     do
-    {   cin >> yn;
-        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n')) 
-        {   isCorrect = true;
-            if(tolower(yn[0]) == 'y') confirm = true;
+    {
+        cin >> yn;
+        if (yn.length() == 1 && (tolower(yn[0]) == 'y' || tolower(yn[0]) == 'n'))
+        {
+            isCorrect = true;
+            if (tolower(yn[0]) == 'y') confirm = true;
             else confirm = false;
         }
         else
-        {   cout << "Error! Enter letter 'y' (yes) or 'n' (no): ";
+        {
+            cout << "Error! Enter letter 'y' (yes) or 'n' (no): ";
             isCorrect = false;
         }
     } while (!isCorrect);
@@ -35,22 +38,25 @@ bool isCorrectNumber(string temp, int maxGrade, int minGrade)
 {
     bool isCorrectValue = true;
     int length = temp.length();
-    for (int i = 0;  i < length; i++)
+    for (int i = 0; i < length; i++)
     {
         if (!isdigit(temp[i]))
-        {   isCorrectValue = false;
+        {
+            isCorrectValue = false;
             cout << "Error! ";
             break;
         }
     }
     if (isCorrectValue == true && stoi(temp) < 1 && maxGrade == 0 && minGrade == 0)
-    {   isCorrectValue = false;
+    {
+        isCorrectValue = false;
         cout << "Error! Number must be greater than 0! ";
     }
 
     else if (isCorrectValue == true && (stoi(temp) < minGrade || stoi(temp) > maxGrade) && maxGrade != 0)
-    {   isCorrectValue = false;
-        cout << "Error! Number must be in range " << minGrade << " to "<< maxGrade << "! ";
+    {
+        isCorrectValue = false;
+        cout << "Error! Number must be in range " << minGrade << " to " << maxGrade << "! ";
     }
     return isCorrectValue;
 }
@@ -61,10 +67,11 @@ int CorrectNumber(string input, int maxGrade, int minGrade, bool stop)
     string temp;
 
     do
-    {   cout << input;
+    {
+        cout << input;
         cin >> temp;
         if (temp == "stop" && stop == true) break;
-    }   while (!isCorrectNumber(temp, maxGrade, minGrade));
+    } while (!isCorrectNumber(temp, maxGrade, minGrade));
 
     if (temp != "stop")x = stoi(temp);
     else x = -1;
@@ -84,13 +91,16 @@ void Stop(string input, int maxGrade, int minGrade, vector<int>& nd, int& n)
     n = 0;
 
     while (stop)
-    {   temp = CorrectNumber(input, maxGrade, minGrade, true);
+    {
+        temp = CorrectNumber(input, maxGrade, minGrade, true);
         if (temp != -1)
-        { nd.push_back(temp);
+        {
+            nd.push_back(temp);
             n++;
         }
         else
-        {   if (n == 0)cout << "Error! Enter at least one number! ";
+        {
+            if (n == 0)cout << "Error! Enter at least one number! ";
             else stop = false;
         }
     }
@@ -106,8 +116,10 @@ bool isCorrectString(string var)
     bool isCorrect = true;
     int length = var.length();
     for (int i = 0; i < length; i++)
-    {   if (isalpha(var[i]) == false)
-        {isCorrect = false;
+    {
+        if (isalpha(var[i]) == false)
+        {
+            isCorrect = false;
             cout << "Error! Name must contain only letters! " << endl;
             break;
         }
@@ -120,7 +132,8 @@ string CorrectString(string input)
 {
     string var;
     do
-    {   cout << "Enter student's" << input << ": ";
+    {
+        cout << "Enter student's" << input << ": ";
         cin >> var;
     } while (!isCorrectString(var));
 
@@ -128,7 +141,7 @@ string CorrectString(string input)
 }
 
 int Sum(int n, vector<int> nd)
-{ 
+{
     int sum;
     sum = accumulate(nd.begin(), nd.end(), 0);
     return sum;
@@ -144,8 +157,8 @@ double Median(vector <int>nd, int n, int egz)
 {
     double median;
     Sorting(nd);
-    if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];  
-    else median = ((nd[nd.size() / 2 ] + nd[(nd.size() + 1) / 2]) / 2.0) * 0.4 + egz * 0.6;
+    if (nd.size() % 2 != 0) median = nd[(nd.size() + 1) / 2];
+    else median = ((nd[nd.size() / 2] + nd[(nd.size() + 1) / 2]) / 2.0) * 0.4 + egz * 0.6;
     return round(median);
 }
 
@@ -256,21 +269,22 @@ void UnknownInput(long int& s, T& Students, bool final)
 }
 
 void GenerateStudent(long int s)
-{ 
+{
     string file = "kursiokai" + to_string(s) + ".txt";
-    int n = RandomGrade();
+    //int n = RandomGrade();
+    int n = 25;
 
     ofstream out(file);
     out << "Name" << setw(23) << "Last name" << setw(14);
-    for (int i = 0; i < n; i ++) out << "Grade" + to_string(i + 1) << setw(8); 
-    out << "Exam" <<  endl;
+    for (int i = 0; i < n; i++) out << "Grade" + to_string(i + 1) << setw(8);
+    out << "Exam" << endl;
 
-    for (int i = 0; i < s; i++){
+    for (int i = 0; i < s; i++) {
 
-    out << "Vardenis" + to_string(i);
-    out << setw(20) << "Pavardenis" + to_string(i) << setw(10);
-    for (int j = 0; j <= n; j ++) out << RandomGrade() << setw(8);
-    out << endl; 
+        out << "Vardenis" + to_string(i);
+        out << setw(20) << "Pavardenis" + to_string(i) << setw(10);
+        for (int j = 0; j <= n; j++) out << RandomGrade() << setw(8);
+        out << endl;
     }
     out.close();
 }
@@ -330,27 +344,28 @@ void InputFiles(T& Students, string file, bool final)
         }
         exit(1);
     }
-    cout << "Time taken to input data: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to input data: " << fixed << setprecision(4) << end << " s" << endl;
 
 }
 
 void Container(int container)
 {
     bool final = Final();
-    if (container == 1) 
+    if (container == 1)
     {
-        deque <Student> Students; 
+        deque <Student> Students;
         deque <Student> Winners;
         MAIN(Students, Winners, final);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
         PrePrint(final, Winners, Students);
     }
-    else if (container == 2) 
+    else if (container == 2)
     {
         list <Student> Students;
-        list <Student> Winners; 
-        MAIN(Students, Winners, final); 
+        list <Student> Winners;
+        MAIN(Students, Winners, final);
         Students.sort(CompareLastNames());
         Winners.sort(CompareLastNames());
         PrePrint(final, Winners, Students);
@@ -365,6 +380,7 @@ void Container(int container)
         PrePrint(final, Winners, Students);
     }
     
+
 }
 
 bool Final()
@@ -377,7 +393,7 @@ bool Final()
 }
 
 template <class T>
-void Manual(long int &s, T &Students, bool final)
+void Manual(long int& s, T& Students, bool final)
 {
     cout << "Do you want to enter the number of students? (y/n) ";
     if (Confirm())
@@ -389,7 +405,7 @@ void Manual(long int &s, T &Students, bool final)
 }
 
 template <class T>
-void Automatic(long int &s, T &Students, bool final)
+void Automatic(long int& s, T& Students, bool final)
 {
     cout << endl << "> Choose file:" << endl
         << "1. kursiokai1000.txt" << endl
@@ -424,11 +440,12 @@ void PrePrint(bool final, T Winners, T Students)
         Print(Winners, Winners.size(), outputMedian, "Winners");
         Print(Students, Students.size(), outputMedian, "Losers");
     }
+    
 }
 
 template <class T>
-void MAIN(T &Students, T &Winners, bool final)
-{  
+void MAIN(T& Students, T& Winners, bool final)
+{
     long int s = 0;
 
     cout << "Do you want to enter data manually? (y/n) ";
@@ -437,9 +454,9 @@ void MAIN(T &Students, T &Winners, bool final)
     Group(Students, Winners, s);
 }
 
-bool isWinner(Student const &S)
+bool isWinner(Student const& S)
 {
-   return (S.final >= 5);
+    return (S.final >= 5);
 }
 
 template <class T>
@@ -448,6 +465,7 @@ void Group(T& Students, T& Winners, long int s)
     start = std::chrono::steady_clock::now();
     copy_if(Students.begin(), Students.end(), back_inserter(Winners), isWinner);
     Students.erase(remove_if(Students.begin(), Students.end(), isWinner), Students.end());
-    cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to group students: "<< fixed << setprecision(4)  << end << " s" << endl;
 }
 
