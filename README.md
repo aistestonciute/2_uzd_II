@@ -98,9 +98,25 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 
 ### Duomenų grupavimas ###
 
-
-
 #### 1 strategija ####
+
+Šioje strategijoje naudojami trys vienodo tipo konteineriai. Iš `Students` konteinerio į `Winners` ir `Losers` įrašomi duomenys - jei studento vidurkis yra >= 5 jis įrašomas į `Winners`, jei < 5 - į `Losers`. `Students` konteineris lieka nepakitęs.
+
+Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Deque* | 0.s | 0.026s | 0.12s | 1.02s | 44.20s 
+*List* | 0s | 0.017s | 0.101s | 0.142s | 41.21s
+*Vector* | 0s | 0.09s | 0.157s | 2.12s | 48.32s
+
+#### Optimizuota 1 strategija ####
+
+Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Deque* | 0s | 0.012s | 0.056s | 0.88s | 23.43s 
+*List* | 0s | 0.008s | 0.051s | 0.72s | 19.13s
+*Vector* | 0s | 0.05s | 0.077s | 0.91s | 23.87s
+
+#### 2 strategija ####
 
 Šioje strategijoje naudojami du vienodo tipo konteineriai. Iš `Students` konteinerio ir į `Winners` konteinerį pridedami tie studentai, kurių vidurkis >= 5. `Students` konteineryje lieka tik `losers`.
 
@@ -110,22 +126,6 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 *List* | 0s | 0.0064s | 0.052s | 0.62s | 16.42s
 *Vector* | 0s | 0.018s | 0.062s | 0.72s | 19.52s
 
-
-#### Optimizuota 1 strategija (tik su `std::vector`) ####
-
-Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
------------- | -------------| -------------| -------------| -------------| -------------
-*Vector* | 0s | 0s | 0.012s | 0.031s | 12.42s
-
-#### 2 strategija ####
-
-Šioje strategijoje naudojami trys vienodo tipo konteineriai. Iš `Students` konteinerio į `Winners` ir `Losers` įrašomi duomenys - jei studento vidurkis yra >= 5 jis įrašomas į `Winners`, jei < 5 - į `Losers`. `Students` konteineris lieka nepakitęs.
-
-Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
------------- | -------------| -------------| -------------| -------------| -------------
-*Deque* | 0s | 0.012s | 0.056s | 0.88s | 23.43s 
-*List* | 0s | 0.008s | 0.051s | 0.72s | 19.13s
-*Vector* | 0s | 0.05s | 0.077s | 0.91s | 23.87s
 
 ## Versijos ##
 
