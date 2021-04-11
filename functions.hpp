@@ -76,10 +76,7 @@ template <class T>
 void PrePrint(bool, T, T);
 
 template <class T>
-void MAIN(T&, T&, bool);
-
-template <class T>
-void MAIN(T&, T&, T&, int, bool);
+void PreGroup(T&, T&, T&, int);
 
 template <class T>
 void AutomaticOrManual(T&, bool);
