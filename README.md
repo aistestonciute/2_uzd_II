@@ -8,6 +8,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 * Vartotojas turi pasirinkti konteinerį (`deque`, `list`, `vector`). Visoje programoje pasirinktame konteineryje bus saugomi `Students` duomenys.
 * Vartotojas turi pasirinkti ar nori apskaičiuoti **vidurkį/medianą**.
 * Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinių **sugeneruotų failų**). Tuomet vartotojas turi pasirinkti kurį failą nori naudoti.
+* Vartotojas turi pasirinkti grupavimo strategiją (Naudojant `std::vector`, galima pasirinkti optimizuotą grupavimą su vienu konteineriu).
 
 #### Vartotojui pasirinkus duomenų įvedimą rankiniu būdu ####
 
@@ -98,11 +99,34 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 
 ### Duomenų grupavimas ###
 
+#### 1 strategija ####
+
+Šioje strategijoje naudojami trys vienodo tipo konteineriai. Iš `Students` konteinerio į `Winners` ir `Losers` įrašomi duomenys - jei studento vidurkis yra >= 5 jis įrašomas į `Winners`, jei < 5 - į `Losers`. `Students` konteineris lieka nepakitęs.
+
+Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Deque* | 0s | 0.026s | 0.12s | 1.02s | 44.20s 
+*List* | 0s | 0.017s | 0.101s | 0.142s | 41.21s
+*Vector* | 0s | 0.09s | 0.157s | 2.12s | 48.32s
+
+#### Optimizuota 1 strategija ####
+
+Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Deque* | 0s | 0.012s | 0.056s | 0.88s | 23.43s 
+*List* | 0s | 0.008s | 0.051s | 0.72s | 19.13s
+*Vector* | 0s | 0.05s | 0.077s | 0.91s | 23.87s
+
+#### 2 strategija ####
+
+Šioje strategijoje naudojami du vienodo tipo konteineriai. Iš `Students` konteinerio ir į `Winners` konteinerį pridedami tie studentai, kurių vidurkis >= 5. `Students` konteineryje lieka tik `losers`.
+
 Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 ------------ | -------------| -------------| -------------| -------------| -------------
 *Deque* | 0s | 0.004s | 0.051s | 0.58s | 16.02s 
 *List* | 0s | 0.0064s | 0.052s | 0.62s | 16.42s
-*Vector* | 0s | 0.018s | 0.62s | 0.72s | 19.52s
+*Vector* | 0s | 0.018s | 0.062s | 0.72s | 19.52s
+
 
 ## Versijos ##
 
@@ -111,3 +135,4 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v0.3](https://github.com/aistestonciute/2_uzd/releases/tag/0.3) Sukurtas `functions.cpp` failas, kuriame sudėtos visos [v0.2](https://github.com/aistestonciute/2_uzd/releases/tag/0.2) realizuotos funkcijos. Sukurtas `functions.hpp` - saugantis funkcijų aprašymus ir `struct Student`. `main.cpp` pridėtas klaidų mėtymas ir gaudymas (`exceptional handling`) su klaidų išraiškomis (`error case`). Šiame faile taip pat ištrintos visos funkcijos, palikta tik `int main()`.
  * [v0.4](https://github.com/aistestonciute/2_uzd/releases/tag/0.4) Sukurta funkcija, leidžianti generuoti duomenų failus (dydžiai: 1000, 10000, 100000, 1000000, 10000000). Pridėtas studentų rūšiavimas į dvi grupes: `Winners` (studento vidurkis >= 5) ir `Losers` (studento vidurkis < 5). `Winners` ir `Losers` išvedami į du atskirus failus: `Winners.txt` ir `Losers.txt` Atliktas programos veikimo (spartos) analizė su kiekvienu sugeneruotu duomenų failu.
  * [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) Pridėta galimybė pasirinkti norimą konteinerį (`deque`, `list`, `vector`) `Students` duomenis saugoti. Atlikta ir aprašyta spartos analizė.
+ * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas CMakeLists.txt

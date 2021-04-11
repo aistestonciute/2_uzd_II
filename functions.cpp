@@ -258,8 +258,7 @@ void UnknownInput(long int& s, T& Students, bool final)
 void GenerateStudent(long int s)
 { 
     string file = "kursiokai" + to_string(s) + ".txt";
-    int n = RandomGrade();
-
+    int n = 25;
     ofstream out(file);
     out << "Name" << setw(23) << "Last name" << setw(14);
     for (int i = 0; i < n; i ++) out << "Grade" + to_string(i + 1) << setw(8); 
@@ -330,41 +329,68 @@ void InputFiles(T& Students, string file, bool final)
         }
         exit(1);
     }
-    cout << "Time taken to input data: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to input data: " << end << " s" << endl;
 
+}
+
+int StrategyNumber()
+{
+    cout << endl <<"> Choose grouping strategy:" << endl
+    << "1. Grouping with two containers" << endl
+    << "2. Grouping with two containers (optimized)" << endl
+    << "3. Grouping with one container" << endl;
+    int strategy = CorrectNumber("Enter number: ", 3, 1, false);
+    return strategy;
 }
 
 void Container(int container)
 {
     bool final = Final();
+    int strategy = StrategyNumber();
+    
     if (container == 1) 
     {
         deque <Student> Students; 
         deque <Student> Winners;
-        MAIN(Students, Winners, final);
+        deque <Student> Losers;
+        AutomaticOrManual(Students, final);
+        if (strategy == 1 || strategy == 2) PreGroup(Students, Winners, Losers, strategy);
+        else Group(Students, Winners);
         sort(Students.begin(), Students.end(), CompareLastNames());
+        sort(Losers.begin(), Losers.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
-        PrePrint(final, Winners, Students);
+        if (strategy == 1 || strategy == 2)PrePrint(final, Winners, Losers);
+        else PrePrint(final, Winners, Students);
     }
     else if (container == 2) 
     {
         list <Student> Students;
         list <Student> Winners; 
-        MAIN(Students, Winners, final); 
+        list <Student> Losers;
+        AutomaticOrManual(Students, final);
+        if (strategy == 1 || strategy == 2) PreGroup(Students, Winners, Losers, strategy);
+        else Group(Students, Winners);
         Students.sort(CompareLastNames());
         Winners.sort(CompareLastNames());
-        PrePrint(final, Winners, Students);
+        Losers.sort(CompareLastNames());
+        if (strategy == 1 || strategy == 2)PrePrint(final, Winners, Losers);
+        else PrePrint(final, Winners, Students);
     }
     else if (container == 3)
     {
         vector <Student> Students;
         vector <Student> Winners;
-        MAIN(Students, Winners, final);
+        vector <Student> Losers;
+        AutomaticOrManual(Students, final);
+        if (strategy == 1 || strategy == 2) PreGroup(Students, Winners, Losers, strategy);
+        else Group(Students, Winners);
         sort(Students.begin(), Students.end(), CompareLastNames());
+        sort(Losers.begin(), Losers.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
-        PrePrint(final, Winners, Students);
+        if (strategy == 1 || strategy == 2)PrePrint(final, Winners, Losers);
+        else PrePrint(final, Winners, Students);
     }
-    
 }
 
 bool Final()
@@ -410,44 +436,71 @@ void Automatic(long int &s, T &Students, bool final)
     InputFiles(Students, "kursiokai" + to_string(s) + ".txt", final);
 }
 
-
 template <class T>
-void PrePrint(bool final, T Winners, T Students)
+void PrePrint(bool final, T Winners, T Losers)
 {
     if (final)
     {
         Print(Winners, Winners.size(), outputAverage, "Winners");
-        Print(Students, Students.size(), outputAverage, "Losers");
+        Print(Losers, Losers.size(), outputAverage, "Losers");
     }
     else
     {
         Print(Winners, Winners.size(), outputMedian, "Winners");
-        Print(Students, Students.size(), outputMedian, "Losers");
+        Print(Losers, Losers.size(), outputMedian, "Losers");
     }
 }
 
 template <class T>
-void MAIN(T &Students, T &Winners, bool final)
-{  
+void AutomaticOrManual(T &Students, bool final)
+{
     long int s = 0;
-
     cout << "Do you want to enter data manually? (y/n) ";
     if (Confirm()) Manual(s, Students, final);
     else Automatic(s, Students, final);
-    Group(Students, Winners, s);
 }
 
-bool isWinner(Student const &S)
-{
-   return (S.final >= 5);
-}
-
+// 1,2
 template <class T>
-void Group(T& Students, T& Winners, long int s)
+void PreGroup(T &Students, T&Winners, T&Losers, int strategy)
+{
+    if(strategy == 1) Group(Students, Winners, Losers, true);
+    else Group(Students, Winners, Losers);
+}
+
+//1
+template <class T>
+void Group(T& Students, T& Winners, T& Losers, bool temp)
 {
     start = std::chrono::steady_clock::now();
-    copy_if(Students.begin(), Students.end(), back_inserter(Winners), isWinner);
-    Students.erase(remove_if(Students.begin(), Students.end(), isWinner), Students.end());
-    cout << "Time taken to group students: " << chrono::duration_cast<chrono::seconds>(chrono::steady_clock::now() - start).count() << " s" << endl;
+    auto it = partition(Students.begin(), Students.end(), [](Student const& S) {return S.final < 5; });
+    copy(it, Students.end(), back_inserter(Winners));
+    copy(Students.begin(), it, back_inserter(Losers));
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
 }
+
+//2
+template <class T>
+void Group(T& Students, T& Winners, T& Losers)
+{
+    start = std::chrono::steady_clock::now();
+
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.final >= 5; });
+    copy_if(Students.begin(), Students.end(), back_inserter(Losers), [](Student const& S) {return S.final < 5; });
+
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
+}
+//3
+template <class T>
+void Group(T& Students, T& Winners)
+{
+    start = std::chrono::steady_clock::now();
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.final >= 5; });
+    Students.erase(remove_if(Students.begin(), Students.end(), [](Student const& S) {return S.final >= 5; }), Students.end());
+    double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
+}
+
 
