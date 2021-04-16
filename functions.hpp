@@ -34,7 +34,7 @@ struct Student
 
 struct CompareLastNames
 {
-    bool operator()(const Student& a, const Student& b) { return (b.lastName.compare(a.lastName)); }
+    bool operator()(const Student& a, const Student& b) { return (a.lastName.compare(b.lastName)); }
 };
 
 #define outputMedian  "median"
@@ -76,7 +76,7 @@ template <class T>
 void PrePrint(bool, T, T);
 
 template <class T>
-void PreGroup(T&, T&, T&, int);
+void PreGroup(T&, T&, int);
 
 template <class T>
 void AutomaticOrManual(T&, bool);
@@ -96,7 +96,8 @@ template <class T>
 void Group(T&, T&, T&);
 
 template <class T>
-void Group(T&, T&, T&, bool);
+void Group(T&, T&, bool);
+
 int StrategyNumber();
 
 #endif
