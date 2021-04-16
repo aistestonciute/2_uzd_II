@@ -338,7 +338,7 @@ int StrategyNumber()
 {
     cout << endl <<"> Choose grouping strategy:" << endl
     << "1. Grouping with two containers" << endl
-    << "2. Grouping with one containers" << endl
+    << "2. Grouping with one container" << endl
     << "3. Grouping with one container (optimized)" << endl;
     int strategy = CorrectNumber("Enter number: ", 3, 1, false);
     return strategy;
@@ -501,6 +501,8 @@ void Group(T& Students, T& Winners, bool temp)
     Winners.assign(it, Students.end());
     Students.erase(it, Students.end());
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
+    cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
+
 }
 
 
