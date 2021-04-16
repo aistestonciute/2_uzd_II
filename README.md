@@ -8,7 +8,7 @@ Programa yra skirta apskaičiuoti studento vidurkį/medianą, pagal jo įvestus/
 * Vartotojas turi pasirinkti konteinerį (`deque`, `list`, `vector`). Visoje programoje pasirinktame konteineryje bus saugomi `Students` duomenys.
 * Vartotojas turi pasirinkti ar nori apskaičiuoti **vidurkį/medianą**.
 * Vartotojas turi pasirinkti ar nori įvesti duomenis **rankiniu būdu** (kitu atveju duomenys bus skaitomi iš tekstinių **sugeneruotų failų**). Tuomet vartotojas turi pasirinkti kurį failą nori naudoti.
-* Vartotojas turi pasirinkti grupavimo strategiją (Naudojant `std::vector`, galima pasirinkti optimizuotą grupavimą su vienu konteineriu).
+* Vartotojas turi pasirinkti grupavimo strategiją.
 
 #### Vartotojui pasirinkus duomenų įvedimą rankiniu būdu ####
 
@@ -109,13 +109,6 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 *List* | 0s | 0.017s | 0.101s | 0.142s | 41.21s
 *Vector* | 0s | 0.09s | 0.157s | 2.12s | 48.32s
 
-#### Optimizuota 1 strategija ####
-
-Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
------------- | -------------| -------------| -------------| -------------| -------------
-*Deque* | 0s | 0.012s | 0.056s | 0.88s | 23.43s 
-*List* | 0s | 0.008s | 0.051s | 0.72s | 19.13s
-*Vector* | 0s | 0.05s | 0.077s | 0.91s | 23.87s
 
 #### 2 strategija ####
 
@@ -126,6 +119,15 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 *Deque* | 0s | 0.004s | 0.051s | 0.58s | 16.02s 
 *List* | 0s | 0.0064s | 0.052s | 0.62s | 16.42s
 *Vector* | 0s | 0.018s | 0.062s | 0.72s | 19.52s
+
+
+#### Optimizuota 2 strategija (programoje aprašytas kaip `3` pasirinkimas) ####
+
+Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Deque* | 0s | 0.003s | 0.038s | 0.44s | 8.52s 
+*List* | 0s | 0.004s | 0.047s | 0.57s | 9.48s
+*Vector* | 0s | 0.002s | 0.031s | 0.45s | 10.07s
 
 
 ## Versijos ##
