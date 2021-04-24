@@ -13,6 +13,5 @@ int main()
 
     int container = CorrectNumber("Enter number: ", 3, 1, false);
     Container(container);
-    
     WINPAUSE;
 }
