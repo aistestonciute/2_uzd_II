@@ -60,6 +60,7 @@ Programa išveda klaidą ir prašo pakartoti įvedimą šiais atvejais:
 * Varototojui vietoje vardo ir pavardės įvedus ne žodį.
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) įvedus bet kokį kitą simbolį ar žodį;
 * Vartotojui vietoje pažymio (kuris turi būti nuo `1` iki `10`) arba `stop`, pažymių įvedimo funkcijoje su nežinomu pažymių kiekiu, įvedus bet kokį kitą simbolį ar žodį.
+* Vartotojui pasirinkimo vietoje įvedus ne pasirinkimų intervale esantį skaičių ar kitą neleistiną simbolį.
 
 :heavy_exclamation_mark: Pakartotinis įvedimas vyksta iki tol, kol vartotojas įveda teisingą norimą reikšmę.
 
@@ -151,3 +152,4 @@ Vector | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) Pridėta galimybė pasirinkti norimą konteinerį (`deque`, `list`, `vector`) `Students` duomenis saugoti. Atlikta ir aprašyta spartos analizė.
  * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas CMakeLists.txt
  * [v1.1](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.1) `Student` struktūra pakeista į klasę. Atliktas naujas spartos tyrimas.
+
