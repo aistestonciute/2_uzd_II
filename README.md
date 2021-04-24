@@ -130,6 +130,19 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
 *Vector* | 0s | 0.002s | 0.031s | 0.45s | 10.07s
 
 
+#### Struktūra ir klasė ####
+
+Naudojama greičiausia (3) rūšiavimo strategija ir `std::vector` konteineriai.
+
+Vector | 1000 | 10000 | 1000000 | 10000000 | 10000000
+------------ | -------------| -------------| -------------| -------------| -------------
+*Struct* | 0.044s | 0.302s | 3.312s | 42.607s | 401.034s 
+*Class* | 0.052s | 0.385s | 4.047s | 45.456s | 397.80s
+*Class -O1* | 0.022s | 0.153s | 2.207s | 26.26s | 217.323s
+*Class -O2* | 0.022s | 0.150s | 2.206s | 25.025s | 212.585s
+*Class -O3* | 0.022s | 0.149s | 2.206s | 25.013s | 208.265s
+
+
 ## Versijos ##
 
 * [v0.1](https://github.com/aistestonciute/2_uzd/releases/tag/0.1) Pradinė sistemos versija. Programa yra realizuota dviem būdais: su `C` tipo masyvais ir su `vektoriais`. Programa su C tipo masyvais saugoma **main_array.cpp**, o su vektoriais - **main_vector.cpp**.
@@ -137,4 +150,6 @@ Container | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v0.3](https://github.com/aistestonciute/2_uzd/releases/tag/0.3) Sukurtas `functions.cpp` failas, kuriame sudėtos visos [v0.2](https://github.com/aistestonciute/2_uzd/releases/tag/0.2) realizuotos funkcijos. Sukurtas `functions.hpp` - saugantis funkcijų aprašymus ir `struct Student`. `main.cpp` pridėtas klaidų mėtymas ir gaudymas (`exceptional handling`) su klaidų išraiškomis (`error case`). Šiame faile taip pat ištrintos visos funkcijos, palikta tik `int main()`.
  * [v0.4](https://github.com/aistestonciute/2_uzd/releases/tag/0.4) Sukurta funkcija, leidžianti generuoti duomenų failus (dydžiai: 1000, 10000, 100000, 1000000, 10000000). Pridėtas studentų rūšiavimas į dvi grupes: `Winners` (studento vidurkis >= 5) ir `Losers` (studento vidurkis < 5). `Winners` ir `Losers` išvedami į du atskirus failus: `Winners.txt` ir `Losers.txt` Atliktas programos veikimo (spartos) analizė su kiekvienu sugeneruotu duomenų failu.
  * [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) Pridėta galimybė pasirinkti norimą konteinerį (`deque`, `list`, `vector`) `Students` duomenis saugoti. Atlikta ir aprašyta spartos analizė.
- * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas `CMakeLists.txt`
+ * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas CMakeLists.txt
+ * [v1.1](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.1) `Student` struktūra pakeista į klasę. Atliktas naujas spartos tyrimas.
+
