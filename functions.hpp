@@ -17,24 +17,15 @@
 #include <cmath>
 #include <list>
 #include <deque>
+#include "student.hpp"
 
 static std::chrono::steady_clock::time_point start;
 
 using namespace std;
-struct Student
-{
-    string name;
-    string lastName;
-    int n;
-    vector <int> nd;
-    int egz;
-    double final;
-};
-
 
 struct CompareLastNames
 {
-    bool operator()(const Student& a, const Student& b) { return (a.lastName.compare(b.lastName)); }
+    bool operator()(Student& a, Student& b) { return (a.getLastName().compare(b.getLastName())); }
 };
 
 #define outputMedian  "median"
