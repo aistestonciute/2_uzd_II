@@ -41,7 +41,7 @@ void Stop(string, int, int, vector<int>&, int& );
 int RandomGrade();
 bool isCorrectString(string);
 string CorrectString(string);
-int Sum(int, vector<int>);
+int Sum(vector<int>);
 double Average(int, vector <int>, int);
 double Median(vector <int>, int, int);
 int Max(long int);

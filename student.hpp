@@ -13,20 +13,37 @@ private:
     vector <int> hw;
 public:
     Student() {exam = 0, final = 0, name = "", lastName = "";}
-    Student(string _name, string _lastName, int _exam, int _final, vector <int> _hw)
-    {
-        name = _name;
-        lastName = _lastName;
-        exam = _exam;
-        final = _final;
-        hw = _hw;
-    }
+
     string getName() const {return name;}
     string getLastName() const {return lastName;}
     int getExam() const {return exam;}
     int getFinal() const {return final;}
     vector <int> getHw() const {return hw;} 
+
+    void setName(string _name) {name = _name;}
+    void setLastName(string _lastName) {name = _lastName;}
+    void setExam(int _exam) {exam = _exam;}
+    void setFinal(int _final) {final = _final;}
+    void setHw(vector <int> _hw) {hw = _hw;}
+    
+    Student(const Student& that) :
+        name(that.name), lastName(that.lastName),
+        exam(that.exam), final(that.final),
+        hw(that.hw) {}
+
+    Student& operator=(const Student& that)
+    {
+        name = that.name;
+        lastName = that.lastName;
+        exam = that.exam;
+        final = that.final;
+        hw = that.hw;
+        return *this;
+    }
+
     ~Student() {};
 };
+
+
 
 #endif
