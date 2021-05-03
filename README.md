@@ -74,7 +74,7 @@ Sistema nutraukia darbą šiais atvejais:
 * Įvykus bet kokiai sisteminei klaidai.
 
 ## Įdiegimo instrukcija ##
-* Atsisiųskite norimą programos versiją (rekomenduojama atsisiųsti naujausią versiją) iš [Releases](https://github.com/aistestonciute/2_uzd/releases) aplanko.
+* Atsisiųskite norimą programos versiją (rekomenduojama atsisiųsti naujausią versiją) iš [Releases](https://github.com/aistestonciute/2_uzd_II/releases) aplanko.
 * Išarchyvuokite parsisiųstą failą.
 * Paleiskite programų failus per komandinę eilutę: 
    `g++ -o main main.cpp functions.cpp` `./main`.
@@ -152,4 +152,5 @@ Vector | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) Pridėta galimybė pasirinkti norimą konteinerį (`deque`, `list`, `vector`) `Students` duomenis saugoti. Atlikta ir aprašyta spartos analizė.
  * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas CMakeLists.txt
  * [v1.1](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.1) `Student` struktūra pakeista į klasę. Atliktas naujas spartos tyrimas.
+ * [v1.2](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.2) Realizuotas `Rule of three`. Pakeisti `Student` klasės `set'eriai`
 
