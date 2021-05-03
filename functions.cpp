@@ -127,7 +127,7 @@ string CorrectString(string input)
     return var;
 }
 
-int Sum(int n, vector<int> hw)
+int Sum(vector<int> hw)
 { 
     int sum;
     sum = accumulate(hw.begin(), hw.end(), 0);
@@ -136,7 +136,7 @@ int Sum(int n, vector<int> hw)
 
 double Average(int n, vector <int> hw, int exam)
 {
-    double average = 0.4 * (Sum(n, hw) * 1.0 / n) + 0.6 * exam;
+    double average = 0.4 * (Sum(hw) * 1.0 / n) + 0.6 * exam;
     return round(average);
 }
 
@@ -185,16 +185,15 @@ void MainFunction(T& Students, bool final)
 {
     int maxGrade = 10, minGrade = 1;
     double median;
-
+    Student S;
     string name = CorrectString(" name");
     string lastName = CorrectString(" last name");
     name[0] = toupper(name[0]);
     lastName[0] = toupper(lastName[0]);
+    S.setName(name);
+    S.setLastName(lastName);
     int tempN = 0;
     vector <int> hw;
-    int exam; 
-    int Final;
-    
 
     cout << "Do you want to enter the number of grades? (y/n) ";
 
@@ -218,18 +217,19 @@ void MainFunction(T& Students, bool final)
         Stop("Enter homework grades : ", maxGrade, minGrade, hw, tempN);
     }
 
+    S.setHw(hw);
+
     cout << "Do you want to enter exam grade manually? (y/n) ";
-    if (Confirm())  exam = CorrectNumber("Enter exam grade: ", maxGrade, minGrade, false);
+    if (Confirm())  S.setExam(CorrectNumber("Enter exam grade: ", maxGrade, minGrade, false));
     else
     {
-        exam = RandomGrade();
-        cout << "Generated exam grade: " << exam << endl;
+        S.setExam(RandomGrade());
+        cout << "Generated exam grade: " << S.getExam() << endl;
     }
 
-    if (final)  Final = Average(tempN, hw, exam);
-    else  Final = (Median(hw, tempN, exam));
+    if (final)  S.setFinal(Average(tempN, hw, S.getExam()));
+    else  S.setFinal(Median(hw, tempN, S.getExam()));
 
-    Student S(name, lastName, exam, Final, hw);
     Students.push_back(S);
     hw.clear();
 }
@@ -281,11 +281,9 @@ template <class T>
 void InputFiles(T& Students, string file, bool final)
 {
     start = std::chrono::steady_clock::now();
-    string name;
-    string lastName;
     vector <int> hw;
-    int exam; 
-    int Final;
+    string name, lastName;
+    Student S;
     
     stringstream buffer;
     ifstream in;
@@ -299,9 +297,12 @@ void InputFiles(T& Students, string file, bool final)
         int tempN = 0;
         while (getline(buffer, line))
         {
+            Students.resize(Students.size()+ 1);
             stringstream in(line);
             int grade;
             in >> name >> lastName;
+            S.setName(name);
+            S.setLastName(lastName);
 
             while (in >> grade)
             {
@@ -310,12 +311,13 @@ void InputFiles(T& Students, string file, bool final)
             }
             if (hw.size() == 0) throw 2;
             hw.pop_back();
+            S.setHw(hw);
             tempN = hw.size();
-            exam = grade;
-            if (final)  Final = Average(tempN, hw, exam);
-            else  Final = Median(hw, tempN, exam);
-            Student S(name, lastName, exam, Final, hw);
+            S.setExam(grade);
+            if (final)  S.setFinal (Average(tempN, S.getHw(), S.getExam()));
+            else  S.setFinal ( Median(S.getHw(), tempN, S.getExam()));
             Students.push_back(S);
+            hw.clear();
         }
     }
     catch (int e)
@@ -339,7 +341,6 @@ void InputFiles(T& Students, string file, bool final)
     }
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
     cout << "Time taken to input data: " << end << " s" << endl;
-    hw.clear();
 }
 
 int StrategyNumber()
