@@ -153,4 +153,4 @@ Vector | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v1.0](https://github.com/aistestonciute/2_uzd/releases/tag/1.0) Pridėta galimybė pasirinkti norimą grupavimo strategiją. Atlikta šių strategijų spartos analizė. Sutvarkytas [v0.5](https://github.com/aistestonciute/2_uzd/releases/tag/0.5) pateiktas grupavimas su vienu konteineriu. Pridėta galimybė pasirinkti optimizuotą grupavimą (naudojant `std::vector`) su vienu konteineriu. Pridėtas CMakeLists.txt
  * [v1.1](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.1) `Student` struktūra pakeista į klasę. Atliktas naujas spartos tyrimas.
  * [v1.2](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.2) Realizuotas `Rule of three`. Pakeisti `Student` klasės `set'eriai`
-
+ * [v1.5](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.5) Pridėta abstrakti bazinė klasė `Person`, `Student` klasė padaryta išvestinė `Person` klase.
