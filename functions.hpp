@@ -72,7 +72,7 @@ void PreGroup(T&, T&, int);
 template <class T>
 void AutomaticOrManual(T&, bool);
 
-bool Final();
+bool IsAverage();
 
 template <class T>
 void Manual(long int&, T&, bool);
