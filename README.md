@@ -155,3 +155,4 @@ Vector | 1000 | 10000 | 1000000 | 10000000 | 10000000
  * [v1.2](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.2) Realizuotas `Rule of three`. Pakeisti `Student` klasės `set'eriai`
  * [v1.5](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.5) Pridėta abstrakti bazinė klasė `Person`, `Student` klasė padaryta išvestinė `Person` klase.
  * [v1.5.1](https://github.com/aistestonciute/2_uzd_II/releases/tag/1.5.1) Sutvarkyta abstrakti klasė `Person`. Kintamasis `final` pervadintas į `finalGrade` (taip pat ir visi susiję seter'iai ir geter'iai). Dėl vientisumo funkcija `Final` pervadinta į `isAverage`.
+ * [v2.0](https://github.com/aistestonciute/2_uzd_II/releases/tag/2.0) Atlikti `Unit testai`, pridėta `Doxygen` dokumentacija, pridėtas automatinio diegimo failas.
