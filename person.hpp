@@ -12,6 +12,8 @@ public:
     string getLastName() const {return lastName;}
     void setName(string _name) {name = _name;}
     void setLastName(string _lastName) {lastName = _lastName;}
-    virtual ~Person() = 0;
+    virtual ~Person () = 0;
 };
+
+inline Person::~Person(){}
 #endif
