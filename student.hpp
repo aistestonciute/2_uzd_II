@@ -11,28 +11,21 @@ using std::vector;
 
 class Student : public Person{
 private:
-    int exam, final;
+    int exam, finalGrade;
     vector <int> hw;
 public:
-    Student() {exam = 0, final = 0, Person::name = "", Person::lastName = "";}
-
+    Student() {exam = 0, finalGrade = 0, Person::name = "", Person::lastName = "";}
+    
     int getExam() const {return exam;}
-    int getFinal() const {return final;}
+    int getFinalGrade() const {return finalGrade;}
     vector <int> getHw() const {return hw;} 
 
     void setExam(int _exam) {exam = _exam;}
-    void setFinal(int _final) {final = _final;}
+    void setFinalGrade(int _finalGrade) {finalGrade = _finalGrade;}
     void setHw(vector <int> _hw) {hw = _hw;}
-    
-    /*Student(const Student& that) :
-        {
-            name = that.getName(); lastName = that.getLastName();
-            exam = that.getExam(); final = that.getFinal();
-            hw = that.getHw();
-        }*/
 
     Student (const Student& that) :
-    exam(that.exam), final(that.final),
+    exam(that.exam), finalGrade(that.finalGrade),
     hw(that.hw) 
     {
         name = that.getName();
@@ -44,7 +37,7 @@ public:
         name = that.name;
         lastName = that.lastName;
         exam = that.exam;
-        final = that.final;
+        finalGrade = that.finalGrade;
         hw = that.hw;
         return *this;
     }
