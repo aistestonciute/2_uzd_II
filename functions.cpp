@@ -172,7 +172,7 @@ void Print(T Students, long int s, string output, string fileName)
     out << endl << left << setw(maxLastName + 10) << "Last name" << setw(maxName + 10) << "Name" << "Final (" << output << ")" << endl << line << endl;
     for (long int i = 0; i < s; i++)
     {
-        out << left << setw(maxLastName + 10) << Students.back().getLastName() << setw(maxName + 10) << Students.back().getName() << fixed << setprecision(2) << Students.back().getFinal() << endl;
+        out << left << setw(maxLastName + 10) << Students.back().getLastName() << setw(maxName + 10) << Students.back().getName() << fixed << setprecision(2) << Students.back().getFinalGrade() << endl;
         Students.pop_back();
     }
     out << endl;
@@ -181,7 +181,7 @@ void Print(T Students, long int s, string output, string fileName)
 }
 
 template <class T>
-void MainFunction(T& Students, bool final)
+void MainFunction(T& Students, bool isAverage)
 {
     int maxGrade = 10, minGrade = 1;
     double median;
@@ -227,27 +227,27 @@ void MainFunction(T& Students, bool final)
         cout << "Generated exam grade: " << S.getExam() << endl;
     }
 
-    if (final)  S.setFinal(Average(tempN, hw, S.getExam()));
-    else  S.setFinal(Median(hw, tempN, S.getExam()));
+    if (isAverage)  S.setFinalGrade(Average(tempN, hw, S.getExam()));
+    else  S.setFinalGrade(Median(hw, tempN, S.getExam()));
 
     Students.push_back(S);
     hw.clear();
 }
 
 template <class T>
-void ManualInput(long int s, T& Students, bool final)
+void ManualInput(long int s, T& Students, bool isAverage)
 {
-    for (int i = 0; i < s; i++) MainFunction(Students, final);
+    for (int i = 0; i < s; i++) MainFunction(Students, isAverage);
 }
 
 template <class T>
-void UnknownInput(long int& s, T& Students, bool final)
+void UnknownInput(long int& s, T& Students, bool isAverage)
 {
     bool Continue = true;
 
     while (Continue)
     {
-        MainFunction(Students, final);
+        MainFunction(Students, isAverage);
         cout << "Do you want to add another student? (y/n) ";
         if (!Confirm())
         {
@@ -278,7 +278,7 @@ void GenerateStudent(long int s)
 }
 
 template <class T>
-void InputFiles(T& Students, string file, bool final)
+void InputFiles(T& Students, string file, bool isAverage)
 {
     start = std::chrono::steady_clock::now();
     vector <int> hw;
@@ -314,10 +314,10 @@ void InputFiles(T& Students, string file, bool final)
             S.setHw(hw);
             tempN = hw.size();
             S.setExam(grade);
-            if (final)  S.setFinal (Average(tempN, S.getHw(), S.getExam()));
-            else  S.setFinal ( Median(S.getHw(), tempN, S.getExam()));
+            if (isAverage)  S.setFinalGrade (Average(tempN, S.getHw(), S.getExam()));
+            else  S.setFinalGrade ( Median(S.getHw(), tempN, S.getExam()));
             Students.push_back(S);
-            hw.clear();
+			hw.clear();
         }
     }
     catch (int e)
@@ -341,6 +341,7 @@ void InputFiles(T& Students, string file, bool final)
     }
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
     cout << "Time taken to input data: " << end << " s" << endl;
+
 }
 
 int StrategyNumber()
@@ -355,7 +356,7 @@ int StrategyNumber()
 
 void Container(int container)
 {
-    bool final = Final();
+    bool isAverage = IsAverage();
     int strategy = StrategyNumber();
     
     if (container == 1) 
@@ -363,69 +364,69 @@ void Container(int container)
         deque <Student> Students; 
         deque <Student> Winners;
         deque <Student> Losers;
-        AutomaticOrManual(Students, final);
+        AutomaticOrManual(Students, isAverage);
         if (strategy == 2 || strategy == 3) PreGroup(Students, Winners, strategy);
         else Group(Students, Winners, Losers);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Losers.begin(), Losers.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
-        if (strategy == 2 || strategy == 3)PrePrint(final, Winners, Students);
-        else PrePrint(final, Winners, Losers);
+        if (strategy == 2 || strategy == 3)PrePrint(isAverage, Winners, Students);
+        else PrePrint(isAverage, Winners, Losers);
     }
     else if (container == 2) 
     {
         list <Student> Students;
         list <Student> Winners; 
         list <Student> Losers;
-        AutomaticOrManual(Students, final);
+        AutomaticOrManual(Students, isAverage);
         if (strategy == 2 || strategy == 3) PreGroup(Students, Winners, strategy);
         else Group(Students, Winners, Losers);
         Students.sort(CompareLastNames());
         Winners.sort(CompareLastNames());
         Losers.sort(CompareLastNames());
-        if (strategy == 2 || strategy == 3)PrePrint(final, Winners, Students);
-        else PrePrint(final, Winners, Losers);
+        if (strategy == 2 || strategy == 3)PrePrint(isAverage, Winners, Students);
+        else PrePrint(isAverage, Winners, Losers);
     }
     else if (container == 3)
     {
         vector <Student> Students;
         vector <Student> Winners;
         vector <Student> Losers;
-        AutomaticOrManual(Students, final);
+        AutomaticOrManual(Students, isAverage);
         if (strategy == 2 || strategy == 3) PreGroup(Students, Winners, strategy);
         else Group(Students, Winners, Losers);
         sort(Students.begin(), Students.end(), CompareLastNames());
         sort(Losers.begin(), Losers.end(), CompareLastNames());
         sort(Winners.begin(), Winners.end(), CompareLastNames());
-        if (strategy == 2 || strategy == 3)PrePrint(final, Winners, Students);
-        else PrePrint(final, Winners, Losers);
+        if (strategy == 2 || strategy == 3)PrePrint(isAverage, Winners, Students);
+        else PrePrint(isAverage, Winners, Losers);
     }
 }
 
-bool Final()
+bool IsAverage()
 {
-    bool final;
+    bool isAverage;
     cout << "Do you want the final grade to be mean (average)? (y/n) ";
-    if (Confirm()) final = true;
-    else final = false;
-    return final;
+    if (Confirm()) isAverage = true;
+    else isAverage = false;
+    return isAverage;
 }
 
 template <class T>
-void Manual(long int &s, T &Students, bool final)
+void Manual(long int &s, T &Students, bool isAverage)
 {
     cout << "Do you want to enter the number of students? (y/n) ";
     if (Confirm())
     {
         s = CorrectNumber("Enter the number of students: ");
-        ManualInput(s, Students, final);
+        ManualInput(s, Students, isAverage);
     }
-    else UnknownInput(++s, Students, final);
+    else UnknownInput(++s, Students, isAverage);
 }
 
 
 template <class T>
-void Automatic(long int &s, T &Students, bool final)
+void Automatic(long int &s, T &Students, bool isAverage)
 {
     cout << endl << "> Choose file:" << endl
         << "1. kursiokai1000.txt" << endl
@@ -443,13 +444,13 @@ void Automatic(long int &s, T &Students, bool final)
 
     cout << endl << "> Using kursiokai" + to_string(s) + ".txt" << endl;
     GenerateStudent(s);
-    InputFiles(Students, "kursiokai" + to_string(s) + ".txt", final);
+    InputFiles(Students, "kursiokai" + to_string(s) + ".txt", isAverage);
 }
 
 template <class T>
-void PrePrint(bool final, T Winners, T Losers)
+void PrePrint(bool isAverage, T Winners, T Losers)
 {
-    if (final)
+    if (isAverage)
     {
         Print(Winners, Winners.size(), outputAverage, "Winners");
         Print(Losers, Losers.size(), outputAverage, "Losers");
@@ -462,12 +463,12 @@ void PrePrint(bool final, T Winners, T Losers)
 }
 
 template <class T>
-void AutomaticOrManual(T &Students, bool final)
+void AutomaticOrManual(T &Students, bool isAverage)
 {
     long int s = 0;
     cout << "Do you want to enter data manually? (y/n) ";
-    if (Confirm()) Manual(s, Students, final);
-    else Automatic(s, Students, final);
+    if (Confirm()) Manual(s, Students, isAverage);
+    else Automatic(s, Students, isAverage);
 }
 
 // 2,3
@@ -484,8 +485,8 @@ void Group(T& Students, T& Winners, T& Losers)
 {
     start = std::chrono::steady_clock::now();
 
-    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.getFinal() >= 5; });
-    copy_if(Students.begin(), Students.end(), back_inserter(Losers), [](Student const& S) {return S.getFinal() < 5; });
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.getFinalGrade() >= 5; });
+    copy_if(Students.begin(), Students.end(), back_inserter(Losers), [](Student const& S) {return S.getFinalGrade() < 5; });
 
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
     cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
@@ -497,8 +498,8 @@ template <class T>
 void Group(T& Students, T& Winners)
 {
     start = std::chrono::steady_clock::now();
-    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.getFinal() >= 5; });
-    Students.erase(remove_if(Students.begin(), Students.end(), [](Student const& S) {return S.getFinal() >= 5; }), Students.end());
+    copy_if(Students.begin(), Students.end(), back_inserter(Winners), [](Student const& S) {return S.getFinalGrade() >= 5; });
+    Students.erase(remove_if(Students.begin(), Students.end(), [](Student const& S) {return S.getFinalGrade() >= 5; }), Students.end());
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
     cout << "Time taken to group students: " << fixed << setprecision(4) << end << " s" << endl;
 }
@@ -508,7 +509,7 @@ template <class T>
 void Group(T& Students, T& Winners, bool temp)
 {
     start = std::chrono::steady_clock::now();
-    auto it = stable_partition(Students.begin(), Students.end(), [](Student const& S) {return S.getFinal() < 5;});
+    auto it = stable_partition(Students.begin(), Students.end(), [](Student const& S) {return S.getFinalGrade() < 5;});
     Winners.assign(it, Students.end());
     Students.erase(it, Students.end());
     double end = chrono::duration_cast<chrono::milliseconds>(chrono::steady_clock::now() - start).count() / 1000.0;
